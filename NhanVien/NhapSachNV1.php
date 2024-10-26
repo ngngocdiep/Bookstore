@@ -1,36 +1,49 @@
 <!doctype html>
 <?php
 session_start();
-include '../connectDB.php';
-$id="";$nn="";$nd="";$ls="";$tg="";$nhaxb="";$namxb="";$gn="";$gb="";$sl="";$tt="";
-if(isset($_POST["btnLuu"])){
-		//B2: lấy dữ liệu từ các điều khiển đưa vào biến
-		$id=$_POST['txtIdsach'];
-		$nn=$_POST['txtNgaynhap'];
-		$nd=$_POST['txtNhande'];
-		$ls=$_POST['ddlsach'];
-		$tg=$_POST['txtTacgia'];
-		$nhaxb=$_POST['txtNhaxb'];
-		$namxb=$_POST['txtNamxb'];
-		$gn=$_POST['txtGianhap'];
-		$gb=$_POST['txtGiaban'];
-		$sl=$_POST['txtSoluong'];
-		$tt=$_POST['txtThanhtien'];
-		//if($nn=="" || $nd=="" || $ls=="" || $tg=="" || $nhaxb==""  || $namxb=="" || $gn=="" || $gb=="" || $sl=="" || $tt==""){
-			//echo'<script>alert("Không được để trường nào rỗng")</script>';
-		//}else{
-				//B4: tạo câu lệnh sql để thực hiện chèn dl vào bảng
-		$sql1="Insert into sach Values('$id','$nn','$nd','$ls','$tg','$nhaxb','$namxb','$gn','$gb','$sl','$tt')";
-		$kq1=mysqli_query($conn,$sql1);
-		if($kq1 ){
-			echo'<script>alert("Thêm mới thành công")</script>';
-		}else{
-			echo'<script>alert("Thêm mới thất bại")</script>';
-		}
-			//}
-	}
-	//B5: đóng kết nối
-	mysqli_close($conn);
+// include '../connectDB.php';
+// $sql="select * from sach ";
+// $data=mysqli_query($conn,$sql);
+// if ($data && mysqli_num_rows($data) > 0) {
+// 	$row = mysqli_fetch_object($data);
+// 	$emailcu = $row->email;
+// 	$idnv = $row->idnv;
+// 	$matkhaucu = $row->matkhau;
+// 	$tennv = $row->tennv;
+// 	$chucvucu = $row->chucvunv;
+// 	$ngaysinhcu= $row->ngaysinh;
+// 	$diachicu= $row->diachinv;
+// 	$sdtcu= $row->sdt;
+// 	$gtcu= $row->gioitinh;
+// $_SESSION['email']=$emailcu;
+// $_SESSION['idnv']=$idnv;
+// $_SESSION['tennv']=$tennv;
+// $_SESSION['sdt']=$sdtcu;
+// $_SESSION['ngaysinh']=$ngaysinhcu;
+// $_SESSION['diachinv']=$diachicu;
+// $_SESSION['gioitinh']=$diachicu;
+// }
+
+// //kiểm tra người dùng ấn vào nút lưu 
+// if(isset($_POST['btnLuu'])){
+// 	//lấy các giá trị trên đk đưa vào biến
+	
+// 	$ten=$_POST['txtTennguoidung'];
+// 	$sdt=$_POST['txtSdt'];
+// 	$ngs=$_POST['txtNgaysinh'];
+// 	$gt=$_POST['ddlGioitinh'];
+// 	$dc=$_POST['txtDiachi'];
+// 	//thực hiện câu lệnh sql lưu data vào bảng trong db
+// 	$sql1="Update nhanvien Set tennv='$ten',sdt='$sdt',ngaysinh='$ngs',gioitinh='$gt',diachinv='$dc' Where nhanvien.idnv='$idnv'";
+// 	$kq=mysqli_query($con,$sql1);
+// 	if($kq){
+// 		echo'<script>alert("Thay đổi thành công")</script>';
+// 	}else{
+// 		echo'<script>alert("Thay đổi thất bại")</script>';
+// 	}
+// }
+// //đóng kết nối
+// mysqli_close($con);
 ?>
 <html>
 <head>
@@ -66,8 +79,8 @@ if(isset($_POST["btnLuu"])){
 				</div>
 								<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
-				<i class="fa-solid fa-right-from-bracket"><a href=""></a></i>
-				<i class="fa-solid fa-user"></i>
+				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
+				<a href="HoSoUser.php"><i class="fa-solid fa-user"></i></a>
 			</div>
 	</div>
 	
@@ -96,7 +109,7 @@ if(isset($_POST["btnLuu"])){
 						<li><a href="#">Tồn kho</a></li>
 					</ul>
 				</li>
-				<li ><a href=""><i class="fa-solid fa-user" id="fa-user"></i>Tài khoản</a>
+				<li ><a href="HoSoUser.php"><i class="fa-solid fa-user" id="fa-user"></i>Tài khoản</a>
 					<ul class="sub-menu">
 						<li><a href="HoSoUser.php">Hồ sơ</a></li>
 						<li><a href="DoiMK.php">Đổi mật khẩu</a></li>
@@ -105,65 +118,56 @@ if(isset($_POST["btnLuu"])){
 				
 			</ul>
 		</div>
-		<form method="post" action="">
 		<div class="content">
+			<h4>NHẬP SÁCH</h4>
 			<div class="form-container">
 				<div class="form-group">
-					<label for="idsach">ID sách</label>
-					<input type="text" id="id-sach" name="txtIdsach" value="<?php echo $id ?>">
-				</div>
-				<div class="form-group">
 					<label for="ngaynhap">Ngày nhập</label>
-					<input type="date" id="ngay-nhap" name="txtNgaynhap" value="<?php echo $nn ?>">
+					<input type="date" id="ngay-nhap">
 				</div>
 				<div class="form-group">
 					<label for="nhan-de">Nhan đề</label>
-					<input type="text" id="nhan-de" name="txtNhande" value="<?php echo $nd ?>">
+					<input type="text" id="nhan-de">
 				</div>
 				<div class="form-group">
 					<label for="loai-sach">Loại sách</label>
-					<select id="loai-sach" name="ddlsach">
-						<option value="">---Chọn loại sách---</option>
-						<option value="" <?php if($ls=='Ngôn tình') echo 'selected' ?>>Ngôn tình</option>
-						<option value="" <?php if($ls=='Trinh thám') echo 'selected' ?>>Trinh thám</option>
-						<option value="" <?php if($ls=='Tiểu thuyết') echo 'selected' ?>>Tiểu thuyết</option>
-						<option value="" <?php if($ls=='Khác') echo 'selected' ?>>Khác</option>
+					<select id="loai-sach">
+						<option value="">Chọn loại sách</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<label for="stacgia">Tác giả</label>
-					<input type="text" id="tacgia" name="txtTacgia" value="<?php echo $tg ?>">
+					<input type="text" id="tacgia">
 				</div>
 				<div class="form-group">
 					<label for="nha-xuat-ban">Nhà xuất bản</label>
-					<input type="text" id="nha-xuat-ban" name="txtNhaxb" value="<?php echo $nhaxb ?>">
+					<input type="text" id="nha-xuat-ban">
 				</div>
 				<div class="form-group">
 					<label for="nam-xuat-ban">Năm xuất bản</label>
-					<input type="text" id="nam-xuat-ban" name="txtNamxb" value="<?php echo $namxb ?>">
+					<input type="text" id="nam-xuat-ban">
 				</div>
 				<div class="form-group ">
 					<label for="gia-bia">Giá nhập</label>
-					<input type="text" id="gia-bia" name="txtGianhap" value="<?php echo $gn ?>">
+					<input type="text" id="gia-bia">
 				</div>
 				<div class="form-group">
 					<label for="giaban">Giá bán</label>
-					<input type="text" id="giaban" name="txtGiaban" value="<?php echo $gb ?>">
+					<input type="text" id="giaban">
 				</div>
 				<div class="form-group">
 					<label for="soluong">Số lượng nhập</label>
-					<input type="text" id="soluong" name="txtSoluong" value="<?php echo $sl ?>">
+					<input type="text" id="soluong">
 				</div>
 				<div class="form-group">
 					<label for="thanh-tien">Thành tiền</label>
-					<input type="text" id="thanh-tien" name="txtThanhtien" value="<?php echo $tt ?>">
+					<input type="text" id="thanh-tien">
 				</div>
 			</div>
 			<div class="buttons-container">
-				<button type="submit" name="btnLuu">Lưu</button>
+				<button name="btnLuu">Lưu</button>
 				</div>
 		</div>
-		</form>
 	</div>
 	
 	<!-- Footer -->
