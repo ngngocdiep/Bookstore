@@ -1,7 +1,33 @@
 <!doctype html>
 <?php
 session_start();
-
+include "../connectDB.php";
+$idtk = $_SESSION['idtaikhoan'];
+	//kiểm tra người dùng ấn vào nút lưu 
+if(isset($_POST['btnLuu'])){
+	//lấy các giá trị trên đk đưa vào biến
+	$manv=$_POST['manv'];
+	$ten=$_POST['tennv'];
+	$sdt=$_POST['sdt'];
+	$ngs=$_POST['nsinh'];
+	$gt=$_POST['ddlGioitinh'];
+	$dc=$_POST['diachi'];
+	$ngaylam = $_POST['ngaylam'];
+	$chucvu= $_POST['chucvu'];
+	
+	//thực hiện câu lệnh sql lưu data vào bảng trong db
+	$insertNV="insert into nhanvien (manv, tennv, sdt, ngaysinh, ngayvaolam,chucvunv,diachinv,gioitinh) 
+	values ('$manv','$ten','$sdt','$ngs','$ngaylam','$chucvu','$dc','$gt')";
+	$kq=mysqli_query($conn,$insertNV);
+	if($kq){
+		echo'<script>alert("Thêm hồ sơ thành công")</script>';
+	}else{
+		echo'<script>alert("Thêm thất bại")</script>';
+		
+	}
+}
+//đóng kết nối
+mysqli_close($conn);
 ?>
 <html>
 <head>
@@ -70,41 +96,42 @@ session_start();
 			</li>
 		</div>
 		<!-- Thong tin nhap sach -->
+		<form method="post" action="">
 		<div class="content">
 			<div class="form-container">
 			<div class="form-group">
 				<label for="hotennv">Mã Nhân Viên</label>
-				<input type="text" id="hotennv">
+				<input type="text" name="manv">
 			</div>
 			<div class="form-group">
 				<label for="tuoi">Họ Tên</label>
-				<input type="text" id="tuoi">
+				<input type="text" name="tennv">
 			</div>
 			<div class="form-group">
 				<label for="nsinh">Ngày Sinh</label>
-				<input type="date" id="nsinh">
+				<input type="date" name="nsinh">
 			</div>
 			<div class="form-group">
 				<label for="sdt">Số Điện Thoại</label>
-				<input type="text" id="sdt">
+				<input type="text" name="sdt">
 			</div>
 			<div class="form-group">
 				<label for="gioitinh">Giới Tính</label>
 				<select name="ddlGioitinh" id="gioitinh" style="font-size: 14px; padding: 5px; width:100%">
 					<option value="">Chọn giới tính</option>
-					<option value="Nam" <?php if($gt=='Nam') echo 'selected' ?>>Nam</option>
-					<option value="Nữ"  <?php if($gt=='Nữ') echo 'selected' ?>>Nữ</option>
-					<option value="Khác" <?php if($gt=='Khác') echo 'selected' ?>>Khác</option>
+					<option value="Nam" >Nam</option>
+					<option value="Nữ"  >Nữ</option>
+					<option value="Khác">Khác</option>
 				</select>
 
 			</div>
 			<div class="form-group">
 				<label for="sdt">Địa Chỉ</label>
-				<input type="text" id="sdt">
+				<input type="text" name="diachi">
 			</div>
 			<div class="form-group">
 				<label for="sdt">Ngày vào làm</label>
-				<input type="date" id="sdt">
+				<input type="date" name="ngaylam">
 			</div>
 			<div class="form-group">
 				<label for="sdt">Chức Vụ</label>
@@ -117,9 +144,10 @@ session_start();
 			
 		</div>
 		<div class="buttons-container">
-			<button>Lưu</button>
+			<button name="btnLuu">Lưu</button>
 			</div>
 		</div>
+		</form>
 	</div>
 	<!-- Footer -->
 	<div class="container1">

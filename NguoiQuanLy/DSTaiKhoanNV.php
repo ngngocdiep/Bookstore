@@ -71,7 +71,7 @@ text-align: center;
 				<li class ="nd1"><a href="DSNhanVien.php"><i class="fa-solid fa-person"></i>Quản Lý Nhân Viên</a>
 					<ul class="sub-menu">
 						<li><a href="DSNhanVien.php">Danh sách nhân viên</a></li>
-						<li><a href="DSTaiKhoanNV.php">Danh sách tài khoản nhân viên</a></li>
+						<li><a href="DSTaiKhoanNV.php" style="background-color:  #88cbaf;">Danh sách tài khoản nhân viên</a></li>
 						<li><a href="ChamCongNV.php">Chấm công nhân viên</a></li>
 					</ul>
 				</li>
