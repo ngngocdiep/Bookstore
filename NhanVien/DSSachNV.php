@@ -37,8 +37,8 @@ session_start();
 				</div>
 								<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
-				<i class="fa-solid fa-right-from-bracket"><a href=""></a></i>
-				<i class="fa-solid fa-user"></i>
+				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
+				<a href="HoSoUser.php"><i class="fa-solid fa-user"></i></a>
 			</div>
 	</div>
 	
@@ -67,10 +67,10 @@ session_start();
 						<li><a href="#">Tồn kho</a></li>
 					</ul>
 				</li>
-				<li ><a href=""><i class="fa-solid fa-user" id="fa-user"></i>Tài khoản</a>
+				<li ><a href="HoSoUser.php"><i class="fa-solid fa-user" id="fa-user"></i>Tài khoản</a>
 					<ul class="sub-menu">
-						<li><a href="#">Hồ sơ</a></li>
-						<li><a href="#">Đổi mật khẩu</a></li>
+						<li><a href="HoSoUser.php">Hồ sơ</a></li>
+						<li><a href="DoiMK.php">Đổi mật khẩu</a></li>
 					</ul>
 				</li>
 				

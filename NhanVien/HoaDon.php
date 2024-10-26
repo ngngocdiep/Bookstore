@@ -80,8 +80,8 @@ if (isset($_POST['btnThemsp'])) {
 				</div>
 								<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
-				<i class="fa-solid fa-right-from-bracket"><a href=""></a></i>
-				<i class="fa-solid fa-user"></i>
+				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
+				<a href="HoSoUser.php"><i class="fa-solid fa-user"></i></a>
 			</div>
 	</div>
 	
@@ -101,7 +101,7 @@ if (isset($_POST['btnThemsp'])) {
 				</ul>
 			</li>
 	
-			<li><a href="../NhanVien/QuanLySach.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
+			<li><a href="DSSachNV.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
 				<ul class="sub-menu">
 					<li><a href="DSSachNV.php">Danh sách Sách</a></li>
 					<li><a href="NhapSachNV.php">Nhập sách</a></li>
