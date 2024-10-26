@@ -1,6 +1,5 @@
 <!doctype html>
 <?php
-session_start();
 include '../connectDB.php';
 
 // Khởi tạo session cho nhanvien nếu chưa có
@@ -162,7 +161,6 @@ text-align: center;
 						</tbody>
 						<?php
 					}
-					unset($_SESSION['nhanvien']);
 					echo '</table>';
 				} else {
 					echo '<p>Không có dữ liệu nhân viên nào!</p>';
@@ -191,8 +189,12 @@ text-align: center;
 		window.location.href = "SuaNV.php?index=" + index; // Thay đổi đường dẫn nếu cần
 		
 	}
-	function xoaNV() {
-		window.location.href = "XoaNV.php?index=" + index;
+	function xoaNV(index) {
+		var xoaNV = confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi hóa đơn?");
+		if (xoaNV) {
+			window.location.href = "XoaNV.php?index=" + index;
+		}
+		
 	}
 	</script>	
 </body>

@@ -14,17 +14,23 @@ if(isset($_POST['btnLuu'])){
 	$dc=$_POST['diachi'];
 	$ngaylam = $_POST['ngaylam'];
 	$chucvu= $_POST['chucvu'];
-	
-	//thực hiện câu lệnh sql lưu data vào bảng trong db
-	$insertNV="insert into nhanvien (manv, tennv, sdt, ngaysinh, ngayvaolam,chucvunv,diachinv,gioitinh) 
-	values ('$manv','$ten','$sdt','$ngs','$ngaylam','$chucvu','$dc','$gt')";
-	$kq=mysqli_query($conn,$insertNV);
-	if($kq){
-		echo'<script>alert("Thêm hồ sơ thành công")</script>';
-	}else{
-		echo'<script>alert("Thêm thất bại")</script>';
-		
+	$selectMaNV="select manv from nhanvien where manv = '$manv'";
+	$kt=mysqli_query($conn,$selectMaNV);
+	if(mysqli_num_rows($kt) > 0){
+		echo'<script>alert("Mã nhân viên đã tồn tại, nhập mã khác!")</script>';
+	} else{
+		//thực hiện câu lệnh sql lưu data vào bảng trong db
+		$insertNV="insert into nhanvien (manv, tennv, sdt, ngaysinh, ngayvaolam,chucvunv,diachinv,gioitinh) 
+		values ('$manv','$ten','$sdt','$ngs','$ngaylam','$chucvu','$dc','$gt')";
+		$kq=mysqli_query($conn,$insertNV);
+		if($kq){
+			echo'<script>alert("Thêm hồ sơ thành công"); window.location.href="DSNhanVien.php"</script>';
+		}else{
+			echo'<script>alert("Thêm thất bại")</script>';
+			
+		}
 	}
+	
 }
 //đóng kết nối
 mysqli_close($conn);
@@ -102,23 +108,23 @@ mysqli_close($conn);
 			<div class="form-container">
 			<div class="form-group">
 				<label for="hotennv">Mã Nhân Viên</label>
-				<input type="text" name="manv">
+				<input required type="text" name="manv">
 			</div>
 			<div class="form-group">
 				<label for="tuoi">Họ Tên</label>
-				<input type="text" name="tennv">
+				<input type="text" name="tennv" required>
 			</div>
 			<div class="form-group">
 				<label for="nsinh">Ngày Sinh</label>
-				<input type="date" name="nsinh">
+				<input type="date" name="nsinh" required>
 			</div>
 			<div class="form-group">
 				<label for="sdt">Số Điện Thoại</label>
-				<input type="text" name="sdt">
+				<input type="text" name="sdt" required>
 			</div>
 			<div class="form-group">
 				<label for="gioitinh">Giới Tính</label>
-				<select name="ddlGioitinh" id="gioitinh" style="font-size: 14px; padding: 5px; width:100%">
+				<select required name="ddlGioitinh" id="gioitinh" style="font-size: 14px; padding: 5px; width:100%">
 					<option value="">Chọn giới tính</option>
 					<option value="Nam" >Nam</option>
 					<option value="Nữ"  >Nữ</option>
@@ -128,15 +134,15 @@ mysqli_close($conn);
 			</div>
 			<div class="form-group">
 				<label for="sdt">Địa Chỉ</label>
-				<input type="text" name="diachi">
+				<input type="text" name="diachi" required>
 			</div>
 			<div class="form-group">
 				<label for="sdt">Ngày vào làm</label>
-				<input type="date" name="ngaylam">
+				<input type="date" name="ngaylam" required>
 			</div>
 			<div class="form-group">
 				<label for="sdt">Chức Vụ</label>
-				<select name="chucvu">
+				<select required name="chucvu">
 					<option>Chọn Chức vụ</option>
 					<option>Admin</option>
 					<option>Nhân Viên</option>
