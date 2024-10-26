@@ -26,7 +26,7 @@ if(isset($_POST['btnLuu'])){
 		if($kq){
 			echo'<script>alert("Thêm hồ sơ thành công"); window.location.href="DSNhanVien.php"</script>';
 		}else{
-			echo'<script>alert("Thêm thất bại")</script>';
+			echo'<script>alert("Thêm thất bại"); window.location.href="DSNhanVien.php"</script>';
 			
 		}
 	}
