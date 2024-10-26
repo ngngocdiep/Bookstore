@@ -98,7 +98,6 @@ session_start();
 						<td>Data 4</td>
 						<td>
                         <button class="btn-edit">Sửa</button>
-                        <button class="btn-delete">Xóa</button>
                         </td>
 					  </tr>
 					  <tr>

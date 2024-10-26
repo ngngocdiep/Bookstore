@@ -1,9 +1,7 @@
 <!doctype html>
 <?php
-session_start();
 include '../connectDB.php';
-$id="";$nn="";$nd="";$ls="";$tg="";$nhaxb="";$namxb="";$gn="";$gb="";$sl="";$tt="";
-if(isset($_POST["btnLuu"])){
+if(isset($_POST["btnLuu"])){	
 		//B2: lấy dữ liệu từ các điều khiển đưa vào biến
 		$id=$_POST['txtIdsach'];
 		$nn=$_POST['txtNgaynhap'];
@@ -16,18 +14,47 @@ if(isset($_POST["btnLuu"])){
 		$gb=$_POST['txtGiaban'];
 		$sl=$_POST['txtSoluong'];
 		$tt=$_POST['txtThanhtien'];
-		//if($nn=="" || $nd=="" || $ls=="" || $tg=="" || $nhaxb==""  || $namxb=="" || $gn=="" || $gb=="" || $sl=="" || $tt==""){
-			//echo'<script>alert("Không được để trường nào rỗng")</script>';
-		//}else{
-				//B4: tạo câu lệnh sql để thực hiện chèn dl vào bảng
-		$sql1="Insert into sach Values('$id','$nn','$nd','$ls','$tg','$nhaxb','$namxb','$gn','$gb','$sl','$tt')";
-		$kq1=mysqli_query($conn,$sql1);
-		if($kq1 ){
-			echo'<script>alert("Thêm mới thành công")</script>';
-		}else{
-			echo'<script>alert("Thêm mới thất bại")</script>';
+
+		// Kiểm tra xem ngày nhập có nhỏ hơn ngày mai không
+		$today = strtotime(date("Y-m-d"));
+		$inputDate = strtotime($nn);
+		$tomorrow = strtotime("+1 day", $today);
+	
+		if ($inputDate >= $tomorrow) {
+			echo '<script>alert("Thất bại. Ngày nhập không hợp lệ.")</script>';
+		} else {
+			// lấy idsach và slkho từ sach, nếu tồn tại->update, tăng số lương, nếu chưa->insert
+			$infor="select idsach, slkho from sach where sach.idsach='$id'";
+			$kqinfor=mysqli_query($conn,$infor);
+			$soluong=0;
+			if(mysqli_num_rows($kqinfor) > 0){
+				$row = mysqli_fetch_assoc($kqinfor);
+				$slkho=$row['slkho'];
+				$soluong=$slkho+$sl;
+				$updatesach="update sach set slkho='$soluong' where idsach='$id'";
+				$update=mysqli_query($conn,$updatesach);
+	
+				if ($update) {
+					echo '<script>alert("Thêm mới thành công"); window.location.href="NhapSachNV.php"</script>';
+				} else {
+					echo '<script>alert("Thêm mới thất bại"); window.location.href="NhapSachNV.php"</script>';
+				}
+			} else{
+				// B4: tạo câu lệnh sql để thực hiện chèn dl vào bảng
+				$sql1 = "INSERT INTO sach (idsach,theloai,tacgia,nhande,namxb,nhaxb,gianhap,giaban,slkho) 
+				VALUES ('$id','$ls','$tg','$nd','$namxb','$nhaxb','$gn','$gb','$sl')";
+				$kq1 = mysqli_query($conn, $sql1);
+				if ($kq1) {
+					echo '<script>alert("Thêm mới thành công"); window.location.href="NhapSachNV.php"</script>';
+				} else {
+					echo '<script>alert("Thêm mới thất bại"); window.location.href="NhapSachNV.php"</script>';
+				}
+			}
+			$insertPN="insert into phieunhap (	idsach,	ngaynhap,	soluongnhap,	thanhtien	) 
+			values ('$id','$nn','$sl','$thanhtien')";
+
 		}
-			//}
+		
 	}
 	//B5: đóng kết nối
 	mysqli_close($conn);
@@ -85,8 +112,8 @@ if(isset($_POST["btnLuu"])){
 		
 				<li class ="nd1"><a href="DSSachNV.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
 					<ul class="sub-menu">
-						<li ><a href="DSSachNV.php">Danh sách Sách</a></li>
-						<li ><a href="NhapSachNV.php">Nhập sách</a></li>
+						<li ><a href="DSSachNV.php">Danh mục Sách</a></li>
+						<li ><a href="NhapSachNV.php" style="background-color: #a96c7c;">Nhập sách</a></li>
 						<li><a href="#">Kiểm kê sách</a></li>
 					</ul>		
 				</li>			  
@@ -105,58 +132,59 @@ if(isset($_POST["btnLuu"])){
 				
 			</ul>
 		</div>
-		<form method="post" action="">
+		<form method="post" action="" enctype="multipart/form-data">
 		<div class="content">
+			<h4>NHẬP THÊM SÁCH</h4>
 			<div class="form-container">
 				<div class="form-group">
 					<label for="idsach">ID sách</label>
-					<input type="text" id="id-sach" name="txtIdsach" value="<?php echo $id ?>">
+					<input type="text" id="id-sach" name="txtIdsach" >
 				</div>
 				<div class="form-group">
 					<label for="ngaynhap">Ngày nhập</label>
-					<input type="date" id="ngay-nhap" name="txtNgaynhap" value="<?php echo $nn ?>">
+					<input type="date" id="ngay-nhap" name="txtNgaynhap" >
 				</div>
 				<div class="form-group">
 					<label for="nhan-de">Nhan đề</label>
-					<input type="text" id="nhan-de" name="txtNhande" value="<?php echo $nd ?>">
+					<input type="text" id="nhan-de" name="txtNhande">
 				</div>
 				<div class="form-group">
 					<label for="loai-sach">Loại sách</label>
 					<select id="loai-sach" name="ddlsach">
-						<option value="">---Chọn loại sách---</option>
-						<option value="" <?php if($ls=='Ngôn tình') echo 'selected' ?>>Ngôn tình</option>
-						<option value="" <?php if($ls=='Trinh thám') echo 'selected' ?>>Trinh thám</option>
-						<option value="" <?php if($ls=='Tiểu thuyết') echo 'selected' ?>>Tiểu thuyết</option>
-						<option value="" <?php if($ls=='Khác') echo 'selected' ?>>Khác</option>
+						<option >---Chọn loại sách---</option>
+						<option>Ngôn tình</option>
+						<option>Trinh thám</option>
+						<option >Tiểu thuyết</option>
+						<option >Khác</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<label for="stacgia">Tác giả</label>
-					<input type="text" id="tacgia" name="txtTacgia" value="<?php echo $tg ?>">
+					<input type="text" id="tacgia" name="txtTacgia" >
 				</div>
 				<div class="form-group">
 					<label for="nha-xuat-ban">Nhà xuất bản</label>
-					<input type="text" id="nha-xuat-ban" name="txtNhaxb" value="<?php echo $nhaxb ?>">
+					<input type="text" id="nha-xuat-ban" name="txtNhaxb" >
 				</div>
 				<div class="form-group">
 					<label for="nam-xuat-ban">Năm xuất bản</label>
-					<input type="text" id="nam-xuat-ban" name="txtNamxb" value="<?php echo $namxb ?>">
+					<input type="text" id="nam-xuat-ban" name="txtNamxb" >
 				</div>
 				<div class="form-group ">
 					<label for="gia-bia">Giá nhập</label>
-					<input type="text" id="gia-bia" name="txtGianhap" value="<?php echo $gn ?>">
+					<input type="text" id="gia-bia" name="txtGianhap" oninput="updateThanhTien()">
 				</div>
 				<div class="form-group">
 					<label for="giaban">Giá bán</label>
-					<input type="text" id="giaban" name="txtGiaban" value="<?php echo $gb ?>">
+					<input type="text" id="giaban" name="txtGiaban">
 				</div>
 				<div class="form-group">
 					<label for="soluong">Số lượng nhập</label>
-					<input type="text" id="soluong" name="txtSoluong" value="<?php echo $sl ?>">
+					<input type="number" id="soluong" name="txtSoluong" oninput="updateThanhTien()" >
 				</div>
 				<div class="form-group">
 					<label for="thanh-tien">Thành tiền</label>
-					<input type="text" id="thanh-tien" name="txtThanhtien" value="<?php echo $tt ?>">
+					<input type="number" id="thanh-tien" name="txtThanhtien"  readonly>
 				</div>
 			</div>
 			<div class="buttons-container">
@@ -178,6 +206,18 @@ if(isset($_POST["btnLuu"])){
 				<p class="text-center1 text-body-secondary1">© 2024 Company, Inc</p>
 			</footer>
 		</div>
+	<script>
+        function updateThanhTien() {
+            // Lấy giá nhập và số lượng từ các input
+            const giaNhap = parseFloat(document.getElementById('gia-bia').value) || 0;
+            const soLuong = parseFloat(document.getElementById('soluong').value) || 0;
 
+            // Tính thành tiền
+            const thanhTien = giaNhap * soLuong;
+
+            // Cập nhật giá trị vào input thành tiền
+            document.getElementById('thanh-tien').value = thanhTien.toFixed(2); // Làm tròn đến 2 chữ số thập phân
+        }
+    </script>
 </body>
 </html>
