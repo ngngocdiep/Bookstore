@@ -1,7 +1,30 @@
 <!doctype html>
 <?php
 session_start();
-
+include "../connectDB.php";
+$idtk = $_SESSION['idtaikhoan'];
+	//kiểm tra người dùng ấn vào nút lưu 
+if(isset($_POST['btnLuuTK'])){
+	//lấy các giá trị trên đk đưa vào biến
+	// $manv=$_POST['manv'];
+	// $ten=$_POST['tennv'];
+	$chucvu=$_POST['chucvu'];
+	$email=$_POST['emailnv'];
+	$pass=$_POST['pass'];
+	
+	//thực hiện câu lệnh sql lưu data vào bảng trong db
+	$insertTKNV="insert into taikhoan (idquyen,email,matkhau) 
+	values ('$chucvu','$email','$pass')";
+	$kq=mysqli_query($conn,$insertTKNV);
+	if($kq){
+		echo'<script>alert("Thêm tài khoản thành công")</script>';
+	}else{
+		echo'<script>alert("Thêm thất bại")</script>';
+		
+	}
+}
+//đóng kết nối
+mysqli_close($conn);
 ?>
 <html>
 <head>
@@ -75,19 +98,19 @@ session_start();
 			<div class="form-container">
 				<div class="form-group">
 					<label for="tuoi">Mã Nhân Viên</label>
-					<input type="text" id="tuoi">
+					<input type="text" id="tuoi" name="manv">
 				</div>
 			<div class="form-group">
 				<label for="tuoi">Họ Tên</label>
-				<input type="text" id="tuoi">
+				<input type="text" id="tuoi" name="tennv">
 			</div>
 			<div class="form-group">
 				<label for="sdt">Email</label>
-				<input type="email" id="sdt">
+				<input type="email" id="sdt" name="emailnv">
 			</div>
 			<div class="form-group">
 				<label for="sdt">Mật Khẩu</label>
-				<input type="password" id="sdt">
+				<input type="password" id="sdt"name="pass">
 			</div>
 			<div class="form-group">
 				<label for="sdt">Chức Vụ</label>
@@ -100,7 +123,7 @@ session_start();
 			
 		</div>
 		<div class="buttons-container">
-			<button>Lưu</button>
+			<button name="btnLuuTK">Lưu</button>
 			</div>
 		</div>
 	</div>
