@@ -190,11 +190,10 @@ text-align: center;
 		
 	}
 	function xoaNV(index) {
-		var xoaNV = confirm("Bạn có chắc chắn muốn xóa sản phẩm này khỏi hóa đơn?");
+		var xoaNV = confirm("Bạn có chắc chắn muốn xóa nhân viên này khỏi hóa đơn?");
 		if (xoaNV) {
 			window.location.href = "XoaNV.php?index=" + index;
-		}
-		
+		}		
 	}
 	</script>	
 </body>
