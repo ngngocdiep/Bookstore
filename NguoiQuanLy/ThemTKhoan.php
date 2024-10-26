@@ -1,26 +1,33 @@
 <!doctype html>
 <?php
-session_start();
 include "../connectDB.php";
-$idtk = $_SESSION['idtaikhoan'];
 	//kiểm tra người dùng ấn vào nút lưu 
 if(isset($_POST['btnLuuTK'])){
 	//lấy các giá trị trên đk đưa vào biến
-	// $manv=$_POST['manv'];
+	$manv=$_POST['manv'];
 	// $ten=$_POST['tennv'];
 	$chucvu=$_POST['chucvu'];
 	$email=$_POST['emailnv'];
 	$pass=$_POST['pass'];
-	
-	//thực hiện câu lệnh sql lưu data vào bảng trong db
-	$insertTKNV="insert into taikhoan (idquyen,email,matkhau) 
-	values ('$chucvu','$email','$pass')";
-	$kq=mysqli_query($conn,$insertTKNV);
-	if($kq){
-		echo'<script>alert("Thêm tài khoản thành công")</script>';
-	}else{
-		echo'<script>alert("Thêm thất bại")</script>';
-		
+	if($chucvu='Admin'){
+		$idquyen=2;
+	} else{
+		$idquyen=1;
+	}
+	$selectMaNV="select manv from nhanvien where manv = '$manv'";
+	$kt=mysqli_query($conn,$selectMaNV);
+	if(mysqli_num_rows($kt) ==0){
+		echo'<script>alert("Mã nhân viên không tồn tại, nhập mã khác!")</script>';
+	} else{
+		//thực hiện câu lệnh sql lưu data vào bảng trong db
+		$insertTKNV="insert into taikhoan (manv,idquyen,email,matkhau) 
+		values ('$manv','$idquyen','$email','$pass')";
+		$kq=mysqli_query($conn,$insertTKNV);
+		if($kq){
+			echo'<script>alert("Thêm tài khoản thành công")</script>';
+		}else{
+			echo'<script>alert("Thêm thất bại")</script>';			
+		}
 	}
 }
 //đóng kết nối
@@ -94,16 +101,17 @@ mysqli_close($conn);
 		</div>
 		<!-- Thong tin nhap sach -->
 		<div class="content">
+			<form method="post" action="">
 			<h4>THÊM TÀI KHOẢN</h4>
 			<div class="form-container">
 				<div class="form-group">
 					<label for="tuoi">Mã Nhân Viên</label>
 					<input type="text" id="tuoi" name="manv">
 				</div>
-			<div class="form-group">
+			<!-- <div class="form-group">
 				<label for="tuoi">Họ Tên</label>
 				<input type="text" id="tuoi" name="tennv">
-			</div>
+			</div> -->
 			<div class="form-group">
 				<label for="sdt">Email</label>
 				<input type="email" id="sdt" name="emailnv">
@@ -125,6 +133,7 @@ mysqli_close($conn);
 		<div class="buttons-container">
 			<button name="btnLuuTK">Lưu</button>
 			</div>
+			</form>
 		</div>
 	</div>
 	<!-- Footer -->

@@ -10,7 +10,7 @@ if (!isset($_SESSION['taikhoannv'])) {
 }
 
 // Truy vấn dữ liệu từ bảng nhanvien
-$sql="select * from taikhoan, nhanvien where taikhoan.idnv=nhanvien.idnv ";
+$sql="select * from taikhoan where  taikhoan.idquyen='1' ";
 $data=mysqli_query($conn, $sql);
 if ($data) {
     // Lưu dữ liệu vào session
@@ -120,7 +120,7 @@ text-align: center;
 				echo '<table class="table-5-cols">';
 				echo '<thead>
 						<tr>
-							<th>Tên Tài khoản</th>
+							
 							<th>Email</th>
 							<th>Mật Khẩu</th>
 							<th>Chức Năng</th>
@@ -130,7 +130,7 @@ text-align: center;
 				foreach ($_SESSION['taikhoannv'] as $row) {
 					?>
 					<tr>
-						<td><?php echo htmlspecialchars($row["tennv"]); ?></td>
+						
 						<td><?php echo htmlspecialchars($row["email"]); ?></td>
 						<td><?php echo htmlspecialchars($row["matkhau"]); ?></td>
 						<td>
