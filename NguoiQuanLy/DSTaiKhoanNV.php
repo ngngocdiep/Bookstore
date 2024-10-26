@@ -4,12 +4,12 @@ session_start();
 include '../connectDB.php';
 
 
-// Khởi tạo session cho nhanvien nếu chưa có
+// Khởi tạo session cho taikhonan nếu chưa có
 if (!isset($_SESSION['taikhoannv'])) {
     $_SESSION['taikhoannv'] = [];
 }
 
-// Truy vấn dữ liệu từ bảng nhanvien
+// Truy vấn dữ liệu từ bảng taikhoan
 $sql="select * from taikhoan where  taikhoan.idquyen='1' ";
 $data=mysqli_query($conn, $sql);
 if ($data) {
@@ -134,8 +134,8 @@ text-align: center;
 						<td><?php echo htmlspecialchars($row["email"]); ?></td>
 						<td><?php echo htmlspecialchars($row["matkhau"]); ?></td>
 						<td>
-							<button class="btn-edit" onclick="suaTK()">Sửa</button>
-							<button class="btn-delete" onclick="xoaTK()">Xóa</button>
+							<button class="btn-edit" onclick="suaTK('<?php echo $row['idtaikhoan']; ?>')">Sửa</button>
+							<button class="btn-delete" onclick="xoaTK('<?php echo $row['idtaikhoan']; ?>')">Xóa</button>
 						</td>
 					</tr>
 					<?php
@@ -164,8 +164,8 @@ text-align: center;
 		function themTK() {
 			window.location.href = "ThemTKhoan.php";
 		}
-		function suaTK() {
-			window.location.href = "SuaTK.php";
+		function suaTK(index) {
+			window.location.href = "SuaTK.php?index=" + index;
 		}
 		function xoaTK() {
 			window.location.href = "XoaTKhoan.php";

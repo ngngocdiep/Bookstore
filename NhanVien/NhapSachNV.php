@@ -16,19 +16,30 @@ if(isset($_POST["btnLuu"])){
 		$gb=$_POST['txtGiaban'];
 		$sl=$_POST['txtSoluong'];
 		$tt=$_POST['txtThanhtien'];
-		//if($nn=="" || $nd=="" || $ls=="" || $tg=="" || $nhaxb==""  || $namxb=="" || $gn=="" || $gb=="" || $sl=="" || $tt==""){
-			//echo'<script>alert("Không được để trường nào rỗng")</script>';
-		//}else{
-				//B4: tạo câu lệnh sql để thực hiện chèn dl vào bảng
-		$sql1="Insert into sach Values('$id','$nn','$nd','$ls','$tg','$nhaxb','$namxb','$gn','$gb','$sl','$tt')";
-		$kq1=mysqli_query($conn,$sql1);
-		if($kq1 ){
-			echo'<script>alert("Thêm mới thành công")</script>';
-		}else{
-			echo'<script>alert("Thêm mới thất bại")</script>';
+
+		
+		
+		// Kiểm tra xem ngày nhập có nhỏ hơn ngày mai không
+		$today = strtotime(date("Y-m-d"));
+		$inputDate = strtotime($nn);
+		$tomorrow = strtotime("+1 day", $today);
+	
+		if ($inputDate >= $tomorrow) {
+			echo '<script>alert("Thất bại. Ngày nhập không hợp lệ.")</script>';
+		} else {
+			// B4: tạo câu lệnh sql để thực hiện chèn dl vào bảng
+			$sql1 = "INSERT INTO sach VALUES ('$id', '$nn', '$nd', '$ls', '$tg', '$nhaxb', '$namxb', '$gn', '$gb', '$sl', '$tt')";
+			$kq1 = mysqli_query($conn, $sql1);
+	
+			if ($kq1) {
+				echo '<script>alert("Thêm mới thành công")</script>';
+			} else {
+				echo '<script>alert("Thêm mới thất bại")</script>';
+			}
 		}
-			//}
 	}
+	
+	
 	//B5: đóng kết nối
 	mysqli_close($conn);
 ?>
