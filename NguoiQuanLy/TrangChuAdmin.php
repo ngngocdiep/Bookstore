@@ -39,7 +39,7 @@ session_start();
 				<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
 				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
-				<i class="fa-solid fa-user"></i>
+				<a href="NhanVien/HoSoUser.php"><i class="fa-solid fa-user"></i></a>
 			</div>
 	</div>
 	
@@ -79,7 +79,7 @@ session_start();
 				<div class="form-container">
 					<!-- Các trường nhập liệu trước đó -->
 					<div class="form-group time">
-						<label for="current-time">Thời gian hiện tại</label>
+						<label for="current-time">ĐỒNG HỒ</label>
 						<div class="time-display" id="current-time"></div>
 					</div>
 				</div>

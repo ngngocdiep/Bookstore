@@ -34,7 +34,7 @@ session_start();
 				<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
 				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
-				<i class="fa-solid fa-user"></i>
+				<a href="NhanVien/HoSoUser.php"><i class="fa-solid fa-user"></i></a>
 			</div>
 	</div>
 	
@@ -72,6 +72,7 @@ session_start();
 			</div>
 		<!-- Thong tin nhap sach -->
 		<div class="content">
+			<h4>NHẬP SÁCH</h4>
 			<div class="form-container">
 			<div class="form-group">
 				<label for="ngaynhap">Ngày nhập</label>

@@ -74,7 +74,7 @@ text-align: center;
 				<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
 				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
-				<i class="fa-solid fa-user"></i>
+				<a href="NhanVien/HoSoUser.php"><i class="fa-solid fa-user"></i></a>
 			</div>
 	</div>
 	
@@ -112,6 +112,7 @@ text-align: center;
 		</div>
             
 			<div class="content">
+				<h4>DANH SÁCH TÀI KHOẢN</h4>
 			<?php
 
 			// Kiểm tra xem session có chứa dữ liệu tài khoản nhân viên không
