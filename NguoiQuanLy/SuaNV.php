@@ -2,45 +2,44 @@
 <?php
 session_start();
 include "../connectDB.php";
-if (isset($_GET['index']) && isset($_SESSION['nhanvien'])) {
-    $index = $_GET['index'];
-	$sql="Select * From nhanvien where manv='$index'";
-	$data=mysqli_query($conn,$sql);
-	if ($data && mysqli_num_rows($data) > 0) {
-        $row = mysqli_fetch_object($data);
-		$idnv = $row->idnv;
-		$manv = $row->manv;
-		$tennv = $row->tennv;
-        $chucvucu = $row->chucvunv;
-        $ngaysinhcu= $row->ngaysinh;
-        $diachicu= $row->diachinv;
-        $sdtcu= $row->sdt;
-        $gtcu= $row->gioitinh;
-		$sdtcu= $row->sdt;
-	}
-
+$index = $_GET['index'];
+$sql="Select * From nhanvien where manv='$index'";
+$data=mysqli_query($conn,$sql);
+if ($data && mysqli_num_rows($data) > 0) {
+	$row = mysqli_fetch_object($data);
+	$idnv = $row->idnv;
+	$manvcu = $row->manv;
+	$tennvcu = $row->tennv;
+	$chucvucu = $row->chucvunv;
+	$ngaysinhcu= $row->ngaysinh;
+	$diachicu= $row->diachinv;
+	$sdtcu= $row->sdt;
+	$gtcu= $row->gioitinh;
+	$ngaylamcu= $row->ngayvaolam;
 }
-	
-    
-    if ($data && mysqli_num_rows($data) > 0) {
-        $row = mysqli_fetch_object($data);
-        $emailcu = $row->email;
-		$idnv = $row->idnv;
-        $matkhaucu = $row->matkhau;
-        $tennv = $row->tennv;
-        $chucvucu = $row->chucvunv;
-        $ngaysinhcu= $row->ngaysinh;
-        $diachicu= $row->diachinv;
-        $sdtcu= $row->sdt;
-        $gtcu= $row->gioitinh;
-    $_SESSION['email']=$emailcu;
-	$_SESSION['idnv']=$idnv;
-    $_SESSION['tennv']=$tennv;
-    $_SESSION['sdt']=$sdtcu;
-    $_SESSION['ngaysinh']=$ngaysinhcu;
-    $_SESSION['diachinv']=$diachicu;
-	$_SESSION['gioitinh']=$diachicu;
-    }
+if(isset($_POST['btnLuu'])){
+	//lấy các giá trị trên đk đưa vào biến
+	// $manv=$_POST['txtManv'];
+	$ten=$_POST['txtTenmoi'];
+	$sdt=$_POST['txtSDTmoi'];
+	$ngs=$_POST['txtNgsinhmoi'];
+	$gt=$_POST['ddlGioitinh'];
+	$nglammoi=$_POST['dateNgaylam'];
+	$dcmoi=$_POST['txtDiachi'];
+	$chucvumoi=$_POST['txtchucvu'];
+	//thực hiện câu lệnh sql lưu data vào bảng trong db
+	$sql1="Update nhanvien Set tennv='$ten',sdt='$sdt',ngaysinh='$ngs',gioitinh='$gt',diachinv='$dcmoi',
+	ngayvaolam='$nglammoi',chucvunv='$chucvumoi' Where nhanvien.manv='$index'";
+	$kq=mysqli_query($conn,$sql1);
+	if($kq){
+
+		echo'<script>alert("Thay đổi thành công"); window.location.href="DSNhanVien.php" </script>';
+
+	}else{
+		echo'<script>alert("Thay đổi thất bại")</script>';
+		
+	}
+}
 ?>
 <html>
 <head>
@@ -109,57 +108,60 @@ if (isset($_GET['index']) && isset($_SESSION['nhanvien'])) {
 			</li>
 		</div>
 		<!-- Thong tin nhap sach -->
+		<form method="post" action="">
 		<div class="content">
+			
 			<h3>Sửa thông tin hồ sơ nhân viên</h3>
 			<div class="form-container">
 			<div class="form-group">
 				<label for="">Mã Nhân Viên</label>
-				<input type="text" id="">
+				<input type="text" name="txtManv" id="txtManv" value="<?php echo $index ?>" disabled>
 			</div>
 			<div class="form-group">
 				<label for="ten">Họ Tên</label>
-				<input type="text" id="ten">
+				<input type="text" name="txtTenmoi" value="<?php echo $tennvcu ?>" >
 			</div>
 			<div class="form-group">
 				<label for="nsinh">Ngày Sinh</label>
-				<input type="date" id="nsinh">
+				<input type="date" name="txtNgsinhmoi" value="<?php echo $ngaysinhcu ?>">
 			</div>
 			<div class="form-group">
 				<label for="sdt">Số Điện Thoại</label>
-				<input type="text" id="sdt">
+				<input type="text" name="txtSDTmoi" value="<?php echo $sdtcu ?>">
 			</div>
 			<div class="form-group">
 				<label for="gioitinh">Giới Tính</label>
 				<select name="ddlGioitinh" id="gioitinh" style="font-size: 14px; padding: 5px; width:100%">
 					<option value="">Chọn giới tính</option>
-					<option value="Nam" <?php if($gt=='Nam') echo 'selected' ?>>Nam</option>
-					<option value="Nữ"  <?php if($gt=='Nữ') echo 'selected' ?>>Nữ</option>
-					<option value="Khác" <?php if($gt=='Khác') echo 'selected' ?>>Khác</option>
+					<option value="Nam" <?php if($gtcu=='Nam') echo 'selected' ?>>Nam</option>
+					<option value="Nữ"  <?php if($gtcu=='Nữ') echo 'selected' ?>>Nữ</option>
+					<option value="Khác" <?php if($gtcu=='Khác') echo 'selected' ?>>Khác</option>
 				</select>
 
 			</div>
 			<div class="form-group">
 				<label for="sdt">Địa Chỉ</label>
-				<input type="text" id="">
+				<input type="text" name="txtDiachi" value="<?php echo $diachicu ?>">
 			</div>
 			<div class="form-group">
 				<label for="sdt">Ngày vào làm</label>
-				<input type="date" id="">
+				<input type="date" name="dateNgaylam" value="<?php echo $ngaylamcu ?>">
 			</div>
 			<div class="form-group">
 				<label for="sdt">Chức Vụ</label>
-				<select name="chucvu">
-					<option>Chọn Chức vụ</option>
-					<option>Admin</option>
+				<select name="txtchucvu"  ?>>
+					<option><?php echo $chucvucu ?></option>
+					<option>Quản lý</option>
 					<option>Nhân Viên</option>
 				</select>
 			</div>
 			
 		</div>
 		<div class="buttons-container">
-			<button>Lưu</button>
+			<button name="btnLuu" >Lưu</button>
 			</div>
 		</div>
+		</form>
 	</div>
 	<!-- Footer -->
 	<div class="container1">
@@ -172,6 +174,6 @@ if (isset($_GET['index']) && isset($_SESSION['nhanvien'])) {
 				<p class="text-center1 text-body-secondary1">© 2024 Company, Inc</p>
 			</footer>
 	</div>
-		
+	
 </body>
 </html>
