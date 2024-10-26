@@ -162,7 +162,7 @@ text-align: center;
 						</tbody>
 						<?php
 					}
-					unset($_SESSION['taikhoannv']);
+					unset($_SESSION['nhanvien']);
 					echo '</table>';
 				} else {
 					echo '<p>Không có dữ liệu nhân viên nào!</p>';

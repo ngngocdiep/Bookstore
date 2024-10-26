@@ -2,11 +2,26 @@
 <?php
 session_start();
 include "../connectDB.php";
-$idtk = $_SESSION['idtaikhoan'];
-	$sql="Select * From nhanvien, taikhoan where taikhoan.idtaikhoan='$idtk' and taikhoan.idnv=nhanvien.idnv";
+if (isset($_GET['index']) && isset($_SESSION['nhanvien'])) {
+    $index = $_GET['index'];
+	$sql="Select * From nhanvien where manv='$index'";
+	$data=mysqli_query($conn,$sql);
+	if ($data && mysqli_num_rows($data) > 0) {
+        $row = mysqli_fetch_object($data);
+		$idnv = $row->idnv;
+		$manv = $row->manv;
+		$tennv = $row->tennv;
+        $chucvucu = $row->chucvunv;
+        $ngaysinhcu= $row->ngaysinh;
+        $diachicu= $row->diachinv;
+        $sdtcu= $row->sdt;
+        $gtcu= $row->gioitinh;
+		$sdtcu= $row->sdt;
+	}
 
-	// $sql="Select * From nhanvien Where id='$idtk'";
-    $data=mysqli_query($conn,$sql);
+}
+	
+    
     if ($data && mysqli_num_rows($data) > 0) {
         $row = mysqli_fetch_object($data);
         $emailcu = $row->email;
@@ -44,7 +59,7 @@ $idtk = $_SESSION['idtaikhoan'];
 	<link rel="stylesheet" href ="admin.css" >
 	
 
-<title>SuaNV</title>
+<title>Sửa hồ sơ nhân viên</title>
 
 </head>
 <body>
@@ -95,6 +110,7 @@ $idtk = $_SESSION['idtaikhoan'];
 		</div>
 		<!-- Thong tin nhap sach -->
 		<div class="content">
+			<h3>Sửa thông tin hồ sơ nhân viên</h3>
 			<div class="form-container">
 			<div class="form-group">
 				<label for="">Mã Nhân Viên</label>
