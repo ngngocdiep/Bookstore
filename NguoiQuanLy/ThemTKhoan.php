@@ -1,7 +1,6 @@
 <!doctype html>
 <?php
 include "../connectDB.php";
-	//kiểm tra người dùng ấn vào nút lưu 
 if(isset($_POST['btnLuuTK'])){
 	//lấy các giá trị trên đk đưa vào biến
 	$manv=$_POST['manv'];
@@ -9,7 +8,7 @@ if(isset($_POST['btnLuuTK'])){
 	$chucvu=$_POST['chucvu'];
 	$email=$_POST['emailnv'];
 	$pass=$_POST['pass'];
-	if($chucvu='Admin'){
+	if($chucvu=='Admin'){
 		$idquyen=2;
 	} else{
 		$idquyen=1;
@@ -26,7 +25,7 @@ if(isset($_POST['btnLuuTK'])){
 		values ('$idnv','$idquyen','$email','$pass')";
 		$kq=mysqli_query($conn,$insertTKNV);
 		if($kq){
-			echo'<script>alert("Thêm tài khoản thành công")</script>';
+			echo'<script>alert("Thêm tài khoản thành công"); window.location.href="DSTaiKhoanNV.php" </script>';
 		}else{
 			echo'<script>alert("Thêm thất bại")</script>';			
 		}
