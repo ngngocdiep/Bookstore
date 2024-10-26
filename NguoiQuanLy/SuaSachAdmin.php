@@ -71,6 +71,7 @@ session_start();
 		</div>
 		<!-- Thong tin nhap sach -->
 		<div class="content">
+			<h4>SỬA THÔNG TIN SÁCH</h4>
 			<div class="form-container">
 			<div class="form-group">
 				<label for="ngaynhap">Ngày nhập</label>
