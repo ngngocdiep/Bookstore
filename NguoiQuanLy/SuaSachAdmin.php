@@ -1,31 +1,7 @@
 <!doctype html>
 <?php
 session_start();
-include "../connectDB.php";
-$idtk = $_SESSION['idtaikhoan'];
-	$sql="Select * From nhanvien, taikhoan where taikhoan.idtaikhoan='$idtk' and taikhoan.idnv=nhanvien.idnv";
 
-	// $sql="Select * From nhanvien Where id='$idtk'";
-    $data=mysqli_query($conn,$sql);
-    if ($data && mysqli_num_rows($data) > 0) {
-        $row = mysqli_fetch_object($data);
-        $emailcu = $row->email;
-		$idnv = $row->idnv;
-        $matkhaucu = $row->matkhau;
-        $tennv = $row->tennv;
-        $chucvucu = $row->chucvunv;
-        $ngaysinhcu= $row->ngaysinh;
-        $diachicu= $row->diachinv;
-        $sdtcu= $row->sdt;
-        $gtcu= $row->gioitinh;
-    $_SESSION['email']=$emailcu;
-	$_SESSION['idnv']=$idnv;
-    $_SESSION['tennv']=$tennv;
-    $_SESSION['sdt']=$sdtcu;
-    $_SESSION['ngaysinh']=$ngaysinhcu;
-    $_SESSION['diachinv']=$diachicu;
-	$_SESSION['gioitinh']=$diachicu;
-    }
 ?>
 <html>
 <head>
@@ -44,7 +20,7 @@ $idtk = $_SESSION['idtaikhoan'];
 	<link rel="stylesheet" href ="admin.css" >
 	
 
-<title>SuaNV</title>
+<title>SuaSach</title>
 
 </head>
 <body>
@@ -68,7 +44,7 @@ $idtk = $_SESSION['idtaikhoan'];
 				<li ><a href="TrangChuAdmin.php"><i class="fa-solid fa-house"></i>Trang Chủ</a></li>
 				<li ><a href="#"><i class="fa-solid fa-person"></i>Quản Lý Nhân Viên</a>
 					<ul class="sub-menu">
-						<li class ="nd1"><a href="#">Danh sách nhân viên</a></li>
+						<li><a href="#">Danh sách nhân viên</a></li>
 						<li><a href="#">Danh sách tài khoản nhân viên</a></li>
 						<li><a href="#">Chấm công nhân viên</a></li>
 					</ul>
@@ -82,7 +58,7 @@ $idtk = $_SESSION['idtaikhoan'];
 				<li><a href="../NhanVien/QuanLySach.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
 					<ul class="sub-menu">
 						<li><a href="#">Danh sách Sách</a></li>
-						<li ><a href="#">Nhập sách</a></li>
+						<li class ="nd1"><a href="#">Nhập sách</a></li>
 						<li><a href="#">Kiểm kê sách</a></li>
 					</ul>		
 				</li>			  
@@ -97,48 +73,47 @@ $idtk = $_SESSION['idtaikhoan'];
 		<div class="content">
 			<div class="form-container">
 			<div class="form-group">
-				<label for="">Mã Nhân Viên</label>
-				<input type="text" id="">
+				<label for="ngaynhap">Ngày nhập</label>
+				<input type="date" id="ngay-nhap">
 			</div>
 			<div class="form-group">
-				<label for="ten">Họ Tên</label>
-				<input type="text" id="ten">
+				<label for="nhan-de">Nhan đề</label>
+				<input type="text" id="nhan-de">
 			</div>
 			<div class="form-group">
-				<label for="nsinh">Ngày Sinh</label>
-				<input type="date" id="nsinh">
-			</div>
-			<div class="form-group">
-				<label for="sdt">Số Điện Thoại</label>
-				<input type="text" id="sdt">
-			</div>
-			<div class="form-group">
-				<label for="gioitinh">Giới Tính</label>
-				<select name="ddlGioitinh" id="gioitinh" style="font-size: 14px; padding: 5px; width:100%">
-					<option value="">Chọn giới tính</option>
-					<option value="Nam" <?php if($gt=='Nam') echo 'selected' ?>>Nam</option>
-					<option value="Nữ"  <?php if($gt=='Nữ') echo 'selected' ?>>Nữ</option>
-					<option value="Khác" <?php if($gt=='Khác') echo 'selected' ?>>Khác</option>
-				</select>
-
-			</div>
-			<div class="form-group">
-				<label for="sdt">Địa Chỉ</label>
-				<input type="text" id="">
-			</div>
-			<div class="form-group">
-				<label for="sdt">Ngày vào làm</label>
-				<input type="date" id="">
-			</div>
-			<div class="form-group">
-				<label for="sdt">Chức Vụ</label>
-				<select name="chucvu">
-					<option>Chọn Chức vụ</option>
-					<option>Admin</option>
-					<option>Nhân Viên</option>
+				<label for="loai-sach">Loại sách</label>
+				<select id="loai-sach">
+					<option value="">Chọn loại sách</option>
 				</select>
 			</div>
-			
+			<div class="form-group">
+				<label for="stacgia">Tác giả</label>
+				<input type="text" id="tacgia">
+			</div>
+			<div class="form-group">
+				<label for="nha-xuat-ban">Nhà xuất bản</label>
+				<input type="text" id="nha-xuat-ban">
+			</div>
+			<div class="form-group">
+				<label for="nam-xuat-ban">Năm xuất bản</label>
+				<input type="text" id="nam-xuat-ban">
+			</div>
+			<div class="form-group ">
+				<label for="gia-bia">Giá nhập</label>
+				<input type="text" id="gia-bia">
+			</div>
+			<div class="form-group">
+				<label for="giaban">Giá bán</label>
+				<input type="text" id="giaban">
+			</div>
+			<div class="form-group">
+				<label for="soluong">Số lượng</label>
+				<input type="text" id="soluong">
+			</div>
+			<div class="form-group">
+				<label for="thanh-tien">Thành tiền</label>
+				<input type="text" id="thanh-tien">
+			</div>
 		</div>
 		<div class="buttons-container">
 			<button>Lưu</button>

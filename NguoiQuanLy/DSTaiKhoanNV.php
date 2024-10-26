@@ -2,10 +2,24 @@
 <?php
 session_start();
 include '../connectDB.php';
+
+
+// Khởi tạo session cho nhanvien nếu chưa có
+if (!isset($_SESSION['taikhoannv'])) {
+    $_SESSION['taikhoannv'] = [];
+}
+
+// Truy vấn dữ liệu từ bảng nhanvien
 $sql="select * from taikhoan, nhanvien where taikhoan.idnv=nhanvien.idnv ";
 $data=mysqli_query($conn, $sql);
-// $ten="select tennv from nhanvien";
-// $data_ten=mysqli_query($conn,$ten);
+if ($data) {
+    // Lưu dữ liệu vào session
+    while ($row = mysqli_fetch_assoc($data)) {
+        $_SESSION['taikhoannv'][] = $row; // Thêm từng nhân viên vào session
+    }
+} else {
+    echo "Lỗi truy vấn: " . mysqli_error($conn);
+}
 ?>
 <html>
 <head>
@@ -98,36 +112,39 @@ text-align: center;
 		</div>
             
 			<div class="content">
-				<table class="table-5-cols">
-					<thead>
-					  <tr>
-						<th>Tên Tài khoản</th>
-						<th>Email</th>
-						<th>Mật Khẩu</th>
-						<th>Chức Năng</th>
-					  </tr>
+			<?php
+
+			// Kiểm tra xem session có chứa dữ liệu tài khoản nhân viên không
+			if (isset($_SESSION['taikhoannv']) && !empty($_SESSION['taikhoannv'])) {
+				echo '<table class="table-5-cols">';
+				echo '<thead>
+						<tr>
+							<th>Tên Tài khoản</th>
+							<th>Email</th>
+							<th>Mật Khẩu</th>
+							<th>Chức Năng</th>
+						</tr>
 					</thead>
-					<tbody>
+					<tbody>';
+				foreach ($_SESSION['taikhoannv'] as $row) {
+					?>
+					<tr>
+						<td><?php echo htmlspecialchars($row["tennv"]); ?></td>
+						<td><?php echo htmlspecialchars($row["email"]); ?></td>
+						<td><?php echo htmlspecialchars($row["matkhau"]); ?></td>
+						<td>
+							<button class="btn-edit" onclick="suaTK()">Sửa</button>
+							<button class="btn-delete" onclick="xoaTK()">Xóa</button>
+						</td>
+					</tr>
 					<?php
-						if ($data->num_rows > 0 ) {
-							while(($row = $data->fetch_assoc())){
-								?>
-							<tr>
-								
-								<td><?php echo $row["tennv"]?></td>
-								<td><?php echo $row["email"]?></td>
-								<td><?php echo $row["matkhau"]?></td>
-								<td>
-								<button class="btn-edit">Sửa</button>
-								<button class="btn-delete">Xóa</button>
-								</td>
-							</tr>
-							<?php
-							}
-						}
-						?>
-					</tbody>
-				  </table>
+				}
+				unset($_SESSION['taikhoannv']);
+				echo '</tbody></table>';
+			} else {
+				echo '<p>Không có dữ liệu tài khoản nào!</p>';
+			}
+			?>
 				  <button class="btn-add" onclick="themTK()" >Thêm tài khoản</button>
 			</div>
 	</div>
@@ -145,6 +162,12 @@ text-align: center;
 	<script>		
 		function themTK() {
 			window.location.href = "ThemTKhoan.php";
+		}
+		function suaTK() {
+			window.location.href = "SuaTK.php";
+		}
+		function xoaTK() {
+			window.location.href = "XoaTKhoan.php";
 		}
 	</script>	
 </body>

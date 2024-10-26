@@ -2,10 +2,28 @@
 <?php
 session_start();
 include '../connectDB.php';
-$sql="select * from nhanvien ";
-$data=mysqli_query($conn, $sql);
 
+// Khởi tạo session cho nhanvien nếu chưa có
+if (!isset($_SESSION['nhanvien'])) {
+    $_SESSION['nhanvien'] = [];
+}
 
+// Truy vấn dữ liệu từ bảng nhanvien
+$sql = "SELECT * FROM nhanvien";
+$data = mysqli_query($conn, $sql);
+
+// Kiểm tra xem truy vấn có thành công không
+if ($data) {
+    // Lưu dữ liệu vào session
+    while ($row = mysqli_fetch_assoc($data)) {
+        $_SESSION['nhanvien'][] = $row; // Thêm từng nhân viên vào session
+    }
+} else {
+    echo "Lỗi truy vấn: " . mysqli_error($conn);
+}
+
+// Đóng kết nối
+mysqli_close($conn);
 ?>
 <html>
 <head>
@@ -100,57 +118,56 @@ text-align: center;
 			<div class="content">
 				<div class= "div_left">DANH SÁCH NHÂN VIÊN HIỆN TẠI</div>
 				<div class="div_right">Tổng số: </div>
-
-				<table class="table-5-cols">
-					<thead>
-					  <tr>
-						<th>Mã Nhân Viên</th>
-						<th>Họ Tên Nhân Viên</th>
-						<th>Ngày sinh</th>
-						<th>Số Điện Thoại</th>
-						<th>Địa chỉ</th>
-						<th>Ngày vào làm</th>
-						<th>Thời gian làm việc(tháng)</th>
-						<th>Chức vụ</th>
-						<th>Lương cơ bản (tháng)</th>
-						<th>Chức Năng</th>
-					  </tr>
-					</thead>
-					<tbody>
-						<?php
-						if ($data->num_rows > 0) {
-							while(($row = $data->fetch_assoc())){
-								?>
+				<?php
+				if (isset($_SESSION['nhanvien']) && !empty($_SESSION['nhanvien'])) {
+					echo '<table class="table-5-cols">';
+					echo '<thead>
 							<tr>
-								<td><?php echo $row["manv"]?></td>
-								<td><?php echo $row["tennv"]?></td>
-								<td><?php echo $row["ngaysinh"]?></td>
-								<td><?php echo $row["sdt"]?></td>
-								<td><?php echo $row["diachinv"]?></td>
-								<td><?php echo $row["ngayvaolam"]?></td>
-								<?php 
-								$dayin = $row["ngayvaolam"];
-								$fixedDate = new DateTime("$dayin");
-								// Ngày hôm nay
-								$today = new DateTime();
-
-								// Tính khoảng cách giữa hai ngày
-								$interval = $fixedDate->diff($today);
-								?>
-								<td><?php echo  $interval->m . " tháng và " . $interval->d . " ngày.";?></td>
-								<td><?php echo $row["chucvunv"]?></td>
-								<td><?php echo $row["luongcoban"]?></td>
-								<td>
-								<button class="btn-edit">Sửa</button>
-								<button class="btn-delete">Xóa</button>
-								</td>
+							<th>Mã Nhân Viên</th>
+							<th>Họ Tên Nhân Viên</th>
+							<th>Ngày sinh</th>
+							<th>Số Điện Thoại</th>
+							<th>Địa chỉ</th>
+							<th>Ngày vào làm</th>
+							<th>Thời gian làm việc(tháng)</th>
+							<th>Chức vụ</th>
+							<th>Lương cơ bản (tháng)</th>
+							<th>Chức Năng</th>
 							</tr>
-							<?php
-							}
-						}
+						</thead>';
+					foreach ($_SESSION['nhanvien'] as $row) {
 						?>
-					</tbody>
-				</table>
+						<tbody>
+						<tr>
+							<td><?php echo $row["manv"]; ?></td>
+							<td><?php echo $row["tennv"]; ?></td>
+							<td><?php echo $row["ngaysinh"]; ?></td>
+							<td><?php echo $row["sdt"]; ?></td>
+							<td><?php echo $row["diachinv"]; ?></td>
+							<td><?php echo $row["ngayvaolam"]; ?></td>
+							<?php 
+							$dayin = $row["ngayvaolam"];
+							$fixedDate = new DateTime($dayin);
+							$today = new DateTime();
+							$interval = $fixedDate->diff($today);
+							?>
+							<td><?php echo $interval->m . " tháng và " . $interval->d . " ngày."; ?></td>
+							<td><?php echo $row["chucvunv"]; ?></td>
+							<td><?php echo $row["luongcoban"]; ?></td>
+							<td>
+								<button class="btn-edit" onclick="suaNV('<?php echo $row['manv']; ?>')">Sửa</button>
+								<button class="btn-delete" onclick="xoaNV('<?php echo $row['manv']; ?>')">Xóa</button>
+							</td>
+						</tr>
+						</tbody>
+						<?php
+					}
+					unset($_SESSION['taikhoannv']);
+					echo '</table>';
+				} else {
+					echo '<p>Không có dữ liệu nhân viên nào!</p>';
+				}
+				?>
 				<button class="btn-add" onclick="themNV()">Thêm hồ sơ nhân viên</button>   
 			</div>
 			
@@ -169,6 +186,13 @@ text-align: center;
 	<script>		
 	function themNV() {
 		window.location.href = "ThemHoSo.php";
+	}
+	function suaNV(index) {
+		window.location.href = "SuaNV.php?index=" + index; // Thay đổi đường dẫn nếu cần
+		
+	}
+	function xoaNV() {
+		window.location.href = "XoaNV.php?index=" + index;
 	}
 	</script>	
 </body>
