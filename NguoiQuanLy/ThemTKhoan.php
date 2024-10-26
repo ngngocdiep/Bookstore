@@ -1,7 +1,30 @@
 <!doctype html>
 <?php
 session_start();
-
+include "../connectDB.php";
+$idtk = $_SESSION['idtaikhoan'];
+	//kiểm tra người dùng ấn vào nút lưu 
+if(isset($_POST['btnLuuTK'])){
+	//lấy các giá trị trên đk đưa vào biến
+	// $manv=$_POST['manv'];
+	// $ten=$_POST['tennv'];
+	$chucvu=$_POST['chucvu'];
+	$email=$_POST['emailnv'];
+	$pass=$_POST['pass'];
+	
+	//thực hiện câu lệnh sql lưu data vào bảng trong db
+	$insertTKNV="insert into taikhoan (idquyen,email,matkhau) 
+	values ('$chucvu','$email','$pass')";
+	$kq=mysqli_query($conn,$insertTKNV);
+	if($kq){
+		echo'<script>alert("Thêm tài khoản thành công")</script>';
+	}else{
+		echo'<script>alert("Thêm thất bại")</script>';
+		
+	}
+}
+//đóng kết nối
+mysqli_close($conn);
 ?>
 <html>
 <head>
@@ -33,8 +56,8 @@ session_start();
 				</div>
 				<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
-				<i class="fa-solid fa-right-from-bracket"></i>
-				<i class="fa-solid fa-user"></i>
+				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
+				<a href="NhanVien/HoSoUser.php"><i class="fa-solid fa-user"></i></a>
 			</div>
 	</div>
 	
@@ -42,23 +65,23 @@ session_start();
 		<div class="menu">
 				<ul>
 				<li ><a href="TrangChuAdmin.php"><i class="fa-solid fa-house"></i>Trang Chủ</a></li>
-				<li ><a href="#"><i class="fa-solid fa-person"></i>Quản Lý Nhân Viên</a>
+				<li ><a href="DSNhanVien.php"><i class="fa-solid fa-person"></i>Quản Lý Nhân Viên</a>
 					<ul class="sub-menu">
-						<li ><a href="#">Danh sách nhân viên</a></li>
-						<li class ="nd1"><a href="#">Danh sách tài khoản nhân viên</a></li>
-						<li><a href="#">Chấm công nhân viên</a></li>
+						<li ><a href="DSNhanVien.php">Danh sách nhân viên</a></li>
+						<li class ="nd1"><a href="DSTaiKhoanNV.php">Danh sách tài khoản nhân viên</a></li>
+						<li><a href="ChamCongNV.php">Chấm công nhân viên</a></li>
 					</ul>
 				</li>
-				<li><a href="#"><i class="fa-solid fa-cart-shopping"></i>Quản Lý Đơn Hàng</a>
+				<li><a href="DSDonHang.php"><i class="fa-solid fa-cart-shopping"></i>Quản Lý Đơn Hàng</a>
 					<ul class="sub-menu">
-						<li><a href="#">Danh sách đơn hàng</a></li>
+						<li><a href="DSDonHang.php">Danh sách đơn hàng</a></li>
 						<li><a href="#">Tình trạng đơn hàng</a></li>
 					</ul>		
 				</li>	
-				<li><a href="../NhanVien/QuanLySach.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
+				<li><a href="DSSach.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
 					<ul class="sub-menu">
-						<li><a href="#">Danh sách Sách</a></li>
-						<li ><a href="#">Nhập sách</a></li>
+						<li><a href="DSSach.php">Danh sách Sách</a></li>
+						<li ><a href="NhapSachAdmin.php">Nhập sách</a></li>
 						<li><a href="#">Kiểm kê sách</a></li>
 					</ul>		
 				</li>			  
@@ -71,22 +94,23 @@ session_start();
 		</div>
 		<!-- Thong tin nhap sach -->
 		<div class="content">
+			<h4>THÊM TÀI KHOẢN</h4>
 			<div class="form-container">
 				<div class="form-group">
 					<label for="tuoi">Mã Nhân Viên</label>
-					<input type="text" id="tuoi">
+					<input type="text" id="tuoi" name="manv">
 				</div>
 			<div class="form-group">
 				<label for="tuoi">Họ Tên</label>
-				<input type="text" id="tuoi">
+				<input type="text" id="tuoi" name="tennv">
 			</div>
 			<div class="form-group">
 				<label for="sdt">Email</label>
-				<input type="email" id="sdt">
+				<input type="email" id="sdt" name="emailnv">
 			</div>
 			<div class="form-group">
 				<label for="sdt">Mật Khẩu</label>
-				<input type="password" id="sdt">
+				<input type="password" id="sdt"name="pass">
 			</div>
 			<div class="form-group">
 				<label for="sdt">Chức Vụ</label>
@@ -99,7 +123,7 @@ session_start();
 			
 		</div>
 		<div class="buttons-container">
-			<button>Lưu</button>
+			<button name="btnLuuTK">Lưu</button>
 			</div>
 		</div>
 	</div>

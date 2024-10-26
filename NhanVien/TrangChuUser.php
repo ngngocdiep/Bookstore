@@ -38,7 +38,7 @@ session_start();
 								<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
 				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
-				<a href="#"><i class="fa-solid fa-user"></i></a>
+				<a href="HoSoUser.php"><i class="fa-solid fa-user"></i></a>
 				
 			</div>
 	</div>

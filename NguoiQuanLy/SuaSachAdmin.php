@@ -33,8 +33,8 @@ session_start();
 				</div>
 				<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
-				<i class="fa-solid fa-right-from-bracket"></i>
-				<i class="fa-solid fa-user"></i>
+				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
+				<a href="NhanVien/HoSoUser.php"><i class="fa-solid fa-user"></i></a>
 			</div>
 	</div>
 	
@@ -42,23 +42,23 @@ session_start();
 		<div class="menu">
 				<ul>
 				<li ><a href="TrangChuAdmin.php"><i class="fa-solid fa-house"></i>Trang Chủ</a></li>
-				<li ><a href="#"><i class="fa-solid fa-person"></i>Quản Lý Nhân Viên</a>
+				<li ><a href="DSNhanVien.php"><i class="fa-solid fa-person"></i>Quản Lý Nhân Viên</a>
 					<ul class="sub-menu">
-						<li><a href="#">Danh sách nhân viên</a></li>
-						<li><a href="#">Danh sách tài khoản nhân viên</a></li>
-						<li><a href="#">Chấm công nhân viên</a></li>
+						<li><a href="DSNhanVien.php">Danh sách nhân viên</a></li>
+						<li><a href="DSTaiKhoanNV.php">Danh sách tài khoản nhân viên</a></li>
+						<li><a href="ChamCongNV.php">Chấm công nhân viên</a></li>
 					</ul>
 				</li>
-				<li><a href="#"><i class="fa-solid fa-cart-shopping"></i>Quản Lý Đơn Hàng</a>
+				<li><a href="DSDonHang.php"><i class="fa-solid fa-cart-shopping"></i>Quản Lý Đơn Hàng</a>
 					<ul class="sub-menu">
-						<li><a href="#">Danh sách đơn hàng</a></li>
+						<li><a href="DSDonHang.php">Danh sách đơn hàng</a></li>
 						<li><a href="#">Tình trạng đơn hàng</a></li>
 					</ul>		
 				</li>	
-				<li><a href="../NhanVien/QuanLySach.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
+				<li><a href="DSSach.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
 					<ul class="sub-menu">
-						<li><a href="#">Danh sách Sách</a></li>
-						<li class ="nd1"><a href="#">Nhập sách</a></li>
+						<li><a href="DSSach.php">Danh sách Sách</a></li>
+						<li class ="nd1"><a href="NhapSachAdmin.php">Nhập sách</a></li>
 						<li><a href="#">Kiểm kê sách</a></li>
 					</ul>		
 				</li>			  
@@ -71,6 +71,7 @@ session_start();
 		</div>
 		<!-- Thong tin nhap sach -->
 		<div class="content">
+			<h4>SỬA THÔNG TIN SÁCH</h4>
 			<div class="form-container">
 			<div class="form-group">
 				<label for="ngaynhap">Ngày nhập</label>
