@@ -14,14 +14,16 @@ if(isset($_POST['btnLuuTK'])){
 	} else{
 		$idquyen=1;
 	}
-	$selectMaNV="select manv from nhanvien where manv = '$manv'";
+	$selectMaNV="select idnv,manv from nhanvien where manv = '$manv'";
 	$kt=mysqli_query($conn,$selectMaNV);
 	if(mysqli_num_rows($kt) ==0){
 		echo'<script>alert("Mã nhân viên không tồn tại, nhập mã khác!")</script>';
 	} else{
+		$row = mysqli_fetch_assoc($kt);
+		$idnv= $row['idnv'];
 		//thực hiện câu lệnh sql lưu data vào bảng trong db
-		$insertTKNV="insert into taikhoan (manv,idquyen,email,matkhau) 
-		values ('$manv','$idquyen','$email','$pass')";
+		$insertTKNV="insert into taikhoan (idnv,idquyen,email,matkhau) 
+		values ('$idnv','$idquyen','$email','$pass')";
 		$kq=mysqli_query($conn,$insertTKNV);
 		if($kq){
 			echo'<script>alert("Thêm tài khoản thành công")</script>';
