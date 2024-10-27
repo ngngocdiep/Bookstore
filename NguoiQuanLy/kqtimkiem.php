@@ -32,12 +32,10 @@ session_start();
 				<!-- <i class="fa-solid fa-magnifying-glass"></i>
 				<input type="text" id="timkiem" name="timkiem" class="td2" placeholder="Tìm kiếm tựa sách, tác giả, thể loại">
 				<button class="tk">Tìm</button> -->
-				<form method="post" action="kqtimkiem.php">
 				<div class="search-container">
 					<input type="text" name="keyword" class="search-input" placeholder="Nhập từ khóa">
-					<button class="search-button" name="btnTim" >Tìm kiếm</button>
+					<button class="search-button" onclick="timkiem()">Tìm kiếm</button>
 				</div>
-				</form>
 				<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
 				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
@@ -78,102 +76,38 @@ session_start();
 				</ul>
 			</div>
 			<div class="content">
+                <h4>KẾT QUẢ TÌM KIẾM</h4>
 				<div class="form-container">
-					<!-- Các trường nhập liệu trước đó -->
-					<div class="form-group time">
-						<label for="current-time">ĐỒNG HỒ</label>
-						<div class="time-display" id="current-time"></div>
-					</div>
-				</div>
-				<div class="buttons-container">
-					<!-- Các nút bấm trước đó -->
-				</div>
+                <?php
+                if(isset($_POST['btnTim'])){
+                if (isset($_GET['keyword'])) {
+                    $keyword = $_GET['keyword'];
+                    include '../connectDB.php'; // Kết nối cơ sở dữ liệu
 
-				<div class="calendar">
-					<div class="header">
-						<button id="prev">◀</button>
-						<h2 id="monthYear"></h2>
-						<button id="next">▶</button>
-					</div>
-					<div class="days">
-						<div>Sun</div>
-						<div>Mon</div>
-						<div>Tue</div>
-						<div>Wed</div>
-						<div>Thu</div>
-						<div>Fri</div>
-						<div>Sat</div>
-					</div>
-					<div id="dates" class="dates"></div>
-				</div>
+                    // Truy vấn để tìm kiếm trong cơ sở dữ liệu
+                    $sql = "SELECT * FROM sach WHERE nhande LIKE '%" . mysqli_real_escape_string($conn, $keyword) . "%'";
+                    $result = mysqli_query($conn, $sql);
 
-				<script>
-					function updateCurrentTime() {
-					var currentTime = new Date();
-					var timeString = currentTime.toLocaleTimeString();
-					document.getElementById("current-time").textContent = timeString;
-				}
+                    // Kiểm tra nếu có kết quả
+                    if (mysqli_num_rows($result) > 0) {
+                        // Hiển thị kết quả
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            echo "<div class='result-item'>";
+                            echo "<h3>" . htmlspecialchars($row['nhande']) . "</h3>"; // Thay 'cot_tieu_de' bằng tên cột của bạn
+                            echo "<p>" . htmlspecialchars($row['giaban']) . "</p>"; // Thay 'cot_noi_dung' bằng tên cột của bạn
+                            echo "</div>";
+                        }
+                    } else {
+                        echo "<p>Không tìm thấy nội dung nào!</p>";
+                    }
 
-				setInterval(updateCurrentTime, 1000);
-				</script>
-				
-				<script>
-					
-
-
-					const monthYear = document.getElementById("monthYear");
-					const dates = document.getElementById("dates");
-					const prevBtn = document.getElementById("prev");
-					const nextBtn = document.getElementById("next");
-
-					let currentDate = new Date();
-					const today = new Date();
-
-					function renderCalendar() {
-						const year = currentDate.getFullYear();
-						const month = currentDate.getMonth();
-						
-						monthYear.textContent = `${month + 1}/${year}`;
-						dates.innerHTML = '';
-
-						const firstDay = new Date(year, month, 1).getDay();
-						const lastDate = new Date(year, month + 1, 0).getDate();
-						
-						for (let i = 0; i < firstDay; i++) {
-							const emptyDiv = document.createElement("div");
-							dates.appendChild(emptyDiv);
-						}
-
-						for (let date = 1; date <= lastDate; date++) {
-							const dateDiv = document.createElement("div");
-							dateDiv.textContent = date;
-							dateDiv.classList.add("date");
-
-							// Kiểm tra xem có phải là ngày hôm nay không
-							if (date === today.getDate() && 
-								month === today.getMonth() && 
-								year === today.getFullYear()) {
-								dateDiv.classList.add("today");
-							}
-
-							dates.appendChild(dateDiv);
-						}
-					}
-
-					prevBtn.addEventListener("click", () => {
-						currentDate.setMonth(currentDate.getMonth() - 1);
-						renderCalendar();
-					});
-
-					nextBtn.addEventListener("click", () => {
-						currentDate.setMonth(currentDate.getMonth() + 1);
-						renderCalendar();
-					});
-
-					// Render lịch tháng đầu tiên khi tải trang
-					renderCalendar();
-				</script>
+                    // Đóng kết nối
+                    mysqli_close($conn);
+                }
+            }
+                ?>
 			</div>
+            </div>
 	</div>
 	<!-- Footer -->
 		<div class="container1">
@@ -186,7 +120,11 @@ session_start();
 				<p class="text-center1 text-body-secondary1">© 2024 Company, Inc</p>
 			</footer>
 		</div>
-		
+		<script>
+			function timkiem() {
+				window.location.href = "timkiem.php";
+			}
+	</script>
 		
 </body>
 </html>
