@@ -1,7 +1,36 @@
 <!doctype html>
 <?php
 session_start();
+include "../connectDB.php";
+$index = $_GET['index'];
+$sql="Select idnv,email,matkhau From taikhoan where idtaikhoan='$index'";
+$data=mysqli_query($conn,$sql);
+if ($data && mysqli_num_rows($data) > 0) {
+	$row = mysqli_fetch_object($data);
+	$idnv = $row->idnv;
+	$email = $row->email;
+	$matkhau = $row->matkhau;
+}
+if(isset($_POST['btnLuu'])){
+	//lấy các giá trị trên đk đưa vào biến
+	// $manv=$_POST['txtManv'];
+	$idnvmoi=$_POST['txtidnv'];
+	$emailmoi=$_POST['txtemail'];
+	$mkmoi=$_POST['txtmatkhau'];
+	//thực hiện câu lệnh sql lưu data vào bảng trong db
+	$sql1="Update taikhoan Set idnv='$idnvmoi',email='$emailmoi',matkhau='$mkmoi',
+	 Where taikhoan.idtaikhoan='$index'";
+	 echo $sql1;
+	$kq=mysqli_query($conn,$sql1);
+	if($kq){
 
+		echo'<script>alert("Thay đổi thành công"); window.location.href="DSTaiKhoanNV.php" </script>';
+
+	}else{
+		echo'<script>alert("Thay đổi thất bại")</script>';
+		
+	}
+}
 ?>
 <html>
 <head>
@@ -69,40 +98,30 @@ session_start();
 					</ul>
 			</li>
 		</div>
+		<form method="post" action="">
 		<!-- Thong tin nhap sach -->
 		<div class="content">
 			<h4>SỬA THÔNG TIN TÀI KHOẢN</h4>
 			<div class="form-container">
 				<div class="form-group">
-					<label for="">Mã Nhân Viên</label>
-					<input type="text" id="">
+					<label for="">ID Nhân Viên</label>
+					<input type="text" id="" name="txtidnv" value="<?php echo $idnv ?>" disabled>
 				</div>
 			<div class="form-group">
-				<label for="">Họ Tên</label>
-				<input type="text" id="">
-			</div>
-			<div class="form-group">
 				<label for="">Email</label>
-				<input type="email" id="">
+				<input type="email" id="" name="txtemail" value="<?php echo $email ?>">
 			</div>
 			<div class="form-group">
 				<label for="">Mật Khẩu</label>
-				<input type="password" id="">
-			</div>
-			<div class="form-group">
-				<label for="">Chức Vụ</label>
-				<select name="chucvu">
-					<option>Chọn Chức vụ</option>
-					<option>Admin</option>
-					<option>Nhân Viên</option>
-				</select>
+				<input type="password" id="" name="txtmatkhau" value="<?php echo $matkhau ?>">
 			</div>
 			
 		</div>
 		<div class="buttons-container">
-			<button>Lưu</button>
+			<button class="btnLuu">Lưu</button>
 			</div>
 		</div>
+		</form>
 	</div>
 	<!-- Footer -->
 	<div class="container1">

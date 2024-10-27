@@ -1,77 +1,49 @@
 <!doctype html>
 <?php
-include '../connectDB.php';
-if(isset($_POST["btnLuu"])){	
-		//B2: lấy dữ liệu từ các điều khiển đưa vào biến
-		$id=$_POST['txtIdsach'];
-		$nn=$_POST['txtNgaynhap'];
-		$nd=$_POST['txtNhande'];
-		$ls=$_POST['ddlsach'];
-		$tg=$_POST['txtTacgia'];
-		$nhaxb=$_POST['txtNhaxb'];
-		$namxb=$_POST['txtNamxb'];
-		$gn=$_POST['txtGianhap'];
-		$gb=$_POST['txtGiaban'];
-		$sl=$_POST['txtSoluong'];
-		$tt=$_POST['txtThanhtien'];
-		// Kiểm tra xem ngày nhập có nhỏ hơn ngày mai không
-		$today = strtotime(date("Y-m-d"));
-		$inputDate = strtotime($nn);
-		$tomorrow = strtotime("+1 day", $today);
-	
-		if ($inputDate >= $tomorrow) {
-			echo '<script>alert("Thất bại. Ngày nhập không hợp lệ.")</script>';
-		} else {
+session_start();
+// include '../connectDB.php';
+// $sql="select * from sach ";
+// $data=mysqli_query($conn,$sql);
+// if ($data && mysqli_num_rows($data) > 0) {
+// 	$row = mysqli_fetch_object($data);
+// 	$emailcu = $row->email;
+// 	$idnv = $row->idnv;
+// 	$matkhaucu = $row->matkhau;
+// 	$tennv = $row->tennv;
+// 	$chucvucu = $row->chucvunv;
+// 	$ngaysinhcu= $row->ngaysinh;
+// 	$diachicu= $row->diachinv;
+// 	$sdtcu= $row->sdt;
+// 	$gtcu= $row->gioitinh;
+// $_SESSION['email']=$emailcu;
+// $_SESSION['idnv']=$idnv;
+// $_SESSION['tennv']=$tennv;
+// $_SESSION['sdt']=$sdtcu;
+// $_SESSION['ngaysinh']=$ngaysinhcu;
+// $_SESSION['diachinv']=$diachicu;
+// $_SESSION['gioitinh']=$diachicu;
+// }
 
-			// B4: tạo câu lệnh sql để thực hiện chèn dl vào bảng
-			$sql1 = "INSERT INTO sach VALUES ('$id', '$nn', '$nd', '$ls', '$tg', '$nhaxb', '$namxb', '$gn', '$gb', '$sl', '$tt')";
-			$kq1 = mysqli_query($conn, $sql1);
+// //kiểm tra người dùng ấn vào nút lưu 
+// if(isset($_POST['btnLuu'])){
+// 	//lấy các giá trị trên đk đưa vào biến
 	
-			if ($kq1) {
-				echo '<script>alert("Thêm mới thành công")</script>';
-			} else {
-				echo '<script>alert("Thêm mới thất bại")</script>';
-			}
-		}
-
-			// lấy idsach và slkho từ sach, nếu tồn tại->update, tăng số lương, nếu chưa->insert
-			$infor="select idsach, slkho from sach where sach.idsach='$id'";
-			$kqinfor=mysqli_query($conn,$infor);
-			$soluong=0;
-			if(mysqli_num_rows($kqinfor) > 0){
-				$row = mysqli_fetch_assoc($kqinfor);
-				$slkho=$row['slkho'];
-				$soluong=$slkho+$sl;
-				$updatesach="update sach set slkho='$soluong' where idsach='$id'";
-				$update=mysqli_query($conn,$updatesach);
-	
-				if ($update) {
-					echo '<script>alert("Thêm mới thành công"); window.location.href="NhapSachNV.php"</script>';
-				} else {
-					echo '<script>alert("Thêm mới thất bại"); window.location.href="NhapSachNV.php"</script>';
-				}
-			} else{
-				// B4: tạo câu lệnh sql để thực hiện chèn dl vào bảng
-				$sql1 = "INSERT INTO sach (idsach,theloai,tacgia,nhande,namxb,nhaxb,gianhap,giaban,slkho) 
-				VALUES ('$id','$ls','$tg','$nd','$namxb','$nhaxb','$gn','$gb','$sl')";
-				$kq1 = mysqli_query($conn, $sql1);
-				if ($kq1) {
-					echo '<script>alert("Thêm mới thành công"); window.location.href="NhapSachNV.php"</script>';
-				} else {
-					echo '<script>alert("Thêm mới thất bại"); window.location.href="NhapSachNV.php"</script>';
-				}
-			}
-			$insertPN="insert into phieunhap (	idsach,	ngaynhap,	soluongnhap,	thanhtien	) 
-			values ('$id','$nn','$sl','$thanhtien')";
-
-		}
-
-	
-
-	
-	
-	//B5: đóng kết nối
-	mysqli_close($conn);
+// 	$ten=$_POST['txtTennguoidung'];
+// 	$sdt=$_POST['txtSdt'];
+// 	$ngs=$_POST['txtNgaysinh'];
+// 	$gt=$_POST['ddlGioitinh'];
+// 	$dc=$_POST['txtDiachi'];
+// 	//thực hiện câu lệnh sql lưu data vào bảng trong db
+// 	$sql1="Update nhanvien Set tennv='$ten',sdt='$sdt',ngaysinh='$ngs',gioitinh='$gt',diachinv='$dc' Where nhanvien.idnv='$idnv'";
+// 	$kq=mysqli_query($con,$sql1);
+// 	if($kq){
+// 		echo'<script>alert("Thay đổi thành công")</script>';
+// 	}else{
+// 		echo'<script>alert("Thay đổi thất bại")</script>';
+// 	}
+// }
+// //đóng kết nối
+// mysqli_close($con);
 ?>
 <html>
 <head>
@@ -107,8 +79,8 @@ if(isset($_POST["btnLuu"])){
 				</div>
 								<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
-				<i class="fa-solid fa-right-from-bracket"><a href=""></a></i>
-				<i class="fa-solid fa-user"></i>
+				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
+				<a href="HoSoUser.php"><i class="fa-solid fa-user"></i></a>
 			</div>
 	</div>
 	
@@ -126,8 +98,8 @@ if(isset($_POST["btnLuu"])){
 		
 				<li class ="nd1"><a href="DSSachNV.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
 					<ul class="sub-menu">
-						<li ><a href="DSSachNV.php">Danh mục Sách</a></li>
-						<li ><a href="NhapSachNV.php" style="background-color: #a96c7c;">Nhập sách</a></li>
+						<li ><a href="DSSachNV.php">Danh sách Sách</a></li>
+						<li ><a href="NhapSachNV.php">Nhập sách</a></li>
 						<li><a href="#">Kiểm kê sách</a></li>
 					</ul>		
 				</li>			  
@@ -137,7 +109,7 @@ if(isset($_POST["btnLuu"])){
 						<li><a href="#">Tồn kho</a></li>
 					</ul>
 				</li>
-				<li ><a href=""><i class="fa-solid fa-user" id="fa-user"></i>Tài khoản</a>
+				<li ><a href="HoSoUser.php"><i class="fa-solid fa-user" id="fa-user"></i>Tài khoản</a>
 					<ul class="sub-menu">
 						<li><a href="HoSoUser.php">Hồ sơ</a></li>
 						<li><a href="DoiMK.php">Đổi mật khẩu</a></li>
@@ -146,66 +118,56 @@ if(isset($_POST["btnLuu"])){
 				
 			</ul>
 		</div>
-		<form method="post" action="" enctype="multipart/form-data">
 		<div class="content">
-			<h4>NHẬP THÊM SÁCH</h4>
+			<h4>NHẬP SÁCH</h4>
 			<div class="form-container">
 				<div class="form-group">
-					<label for="idsach">ID sách</label>
-					<input type="text" id="id-sach" name="txtIdsach" >
-				</div>
-				<div class="form-group">
 					<label for="ngaynhap">Ngày nhập</label>
-					<input type="date" id="ngay-nhap" name="txtNgaynhap" >
+					<input type="date" id="ngay-nhap">
 				</div>
 				<div class="form-group">
 					<label for="nhan-de">Nhan đề</label>
-					<input type="text" id="nhan-de" name="txtNhande">
+					<input type="text" id="nhan-de">
 				</div>
 				<div class="form-group">
 					<label for="loai-sach">Loại sách</label>
-					<select id="loai-sach" name="ddlsach">
-						<option >---Chọn loại sách---</option>
-						<option>Ngôn tình</option>
-						<option>Trinh thám</option>
-						<option >Tiểu thuyết</option>
-						<option >Khác</option>
+					<select id="loai-sach">
+						<option value="">Chọn loại sách</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<label for="stacgia">Tác giả</label>
-					<input type="text" id="tacgia" name="txtTacgia" >
+					<input type="text" id="tacgia">
 				</div>
 				<div class="form-group">
 					<label for="nha-xuat-ban">Nhà xuất bản</label>
-					<input type="text" id="nha-xuat-ban" name="txtNhaxb" >
+					<input type="text" id="nha-xuat-ban">
 				</div>
 				<div class="form-group">
 					<label for="nam-xuat-ban">Năm xuất bản</label>
-					<input type="text" id="nam-xuat-ban" name="txtNamxb" >
+					<input type="text" id="nam-xuat-ban">
 				</div>
 				<div class="form-group ">
 					<label for="gia-bia">Giá nhập</label>
-					<input type="text" id="gia-bia" name="txtGianhap" oninput="updateThanhTien()">
+					<input type="text" id="gia-bia">
 				</div>
 				<div class="form-group">
 					<label for="giaban">Giá bán</label>
-					<input type="text" id="giaban" name="txtGiaban">
+					<input type="text" id="giaban">
 				</div>
 				<div class="form-group">
 					<label for="soluong">Số lượng nhập</label>
-					<input type="number" id="soluong" name="txtSoluong" oninput="updateThanhTien()" >
+					<input type="text" id="soluong">
 				</div>
 				<div class="form-group">
 					<label for="thanh-tien">Thành tiền</label>
-					<input type="number" id="thanh-tien" name="txtThanhtien"  readonly>
+					<input type="text" id="thanh-tien">
 				</div>
 			</div>
 			<div class="buttons-container">
-				<button type="submit" name="btnLuu">Lưu</button>
+				<button name="btnLuu">Lưu</button>
 				</div>
 		</div>
-		</form>
 	</div>
 	
 	<!-- Footer -->
@@ -220,18 +182,6 @@ if(isset($_POST["btnLuu"])){
 				<p class="text-center1 text-body-secondary1">© 2024 Company, Inc</p>
 			</footer>
 		</div>
-	<script>
-        function updateThanhTien() {
-            // Lấy giá nhập và số lượng từ các input
-            const giaNhap = parseFloat(document.getElementById('gia-bia').value) || 0;
-            const soLuong = parseFloat(document.getElementById('soluong').value) || 0;
 
-            // Tính thành tiền
-            const thanhTien = giaNhap * soLuong;
-
-            // Cập nhật giá trị vào input thành tiền
-            document.getElementById('thanh-tien').value = thanhTien.toFixed(2); // Làm tròn đến 2 chữ số thập phân
-        }
-    </script>
 </body>
 </html>

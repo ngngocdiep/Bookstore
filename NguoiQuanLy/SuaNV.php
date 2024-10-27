@@ -30,6 +30,7 @@ if(isset($_POST['btnLuu'])){
 	//thực hiện câu lệnh sql lưu data vào bảng trong db
 	$sql1="Update nhanvien Set tennv='$ten',sdt='$sdt',ngaysinh='$ngs',gioitinh='$gt',diachinv='$dcmoi',
 	ngayvaolam='$nglammoi',chucvunv='$chucvumoi' Where nhanvien.manv='$index'";
+	
 	$kq=mysqli_query($conn,$sql1);
 	if($kq){
 
