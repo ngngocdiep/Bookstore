@@ -107,8 +107,8 @@ if(isset($_POST["btnLuu"])){
 				</div>
 								<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
-				<i class="fa-solid fa-right-from-bracket"><a href=""></a></i>
-				<i class="fa-solid fa-user"></i>
+				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
+				<a href="HoSoUser.php"><i class="fa-solid fa-user"></i></a>
 			</div>
 	</div>
 	
@@ -169,7 +169,11 @@ if(isset($_POST["btnLuu"])){
 						<option>Ngôn tình</option>
 						<option>Trinh thám</option>
 						<option >Tiểu thuyết</option>
-						<option >Khác</option>
+						<option>Kinh tế</option>
+						<option>Văn học</option>
+						<option >Chính trị</option>
+						<option >Xã hội</option>
+						<option>Khác</option>
 					</select>
 				</div>
 				<div class="form-group">

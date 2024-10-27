@@ -1,7 +1,37 @@
 <!doctype html>
 <?php
 session_start();
+include '../connectDB.php';
 
+
+// Khởi tạo session cho taikhonan nếu chưa có
+if (!isset($_SESSION['sach'])) {
+    $_SESSION['sach'] = [];
+}
+
+// Truy vấn dữ liệu từ bảng taikhoan
+$sql="select * from sach where  sach.idsach ";
+$data=mysqli_query($conn, $sql);
+if ($data) {
+    // Lưu dữ liệu vào session
+    while ($row = mysqli_fetch_assoc($data)) {
+        $_SESSION['sach'][] = $row; 
+    }
+} else {
+    echo "Lỗi truy vấn: " . mysqli_error($conn);
+}
+
+// Truy vấn dữ liệu từ bảng nhanvien
+$sqlCount = "SELECT COUNT(*) as total FROM sach";
+$countResult = mysqli_query($conn, $sqlCount);
+$totalEmployees = 0;
+
+if ($countResult) {
+    $countRow = mysqli_fetch_assoc($countResult);
+    $totalEmployees = $countRow['total']; // Lưu số lượng nhân viên vào biến
+} else {
+    echo "Lỗi truy vấn: " . mysqli_error($conn);
+}
 ?>
 <html>
 <head>
@@ -28,9 +58,6 @@ session_start();
 	<div class="td">
 		<h3 class="chu">NHÀ SÁCH CÓ ĐỦ CẢ</h3>
 			<div class="tieude1">
-				<!-- <i class="fa-solid fa-magnifying-glass"></i>
-				<input type="text" id="timkiem" name="timkiem" class="td2" placeholder="Tìm kiếm tựa sách, tác giả, thể loại">
-				<button class="tk">Tìm</button> -->
 				<div class="search-container">
 					<input type="text" class="search-input" placeholder="Nhập tên sản phẩm">
 					<button class="search-button">Tìm kiếm</button>
@@ -50,11 +77,11 @@ session_start();
 					<ul class="sub-menu">
 						<li><a href="HoaDon.php">Lập hóa đơn bán hàng</a></li>
 						<li><a href="DanhSachHoaDon.php">Quản lý đơn hàng</a></li>
-						<li><a href="../NhanVien/Phieunhap.php">Xử lý hoàn trả hàng</a></li>
+						<li><a href="#">Xử lý hoàn trả hàng</a></li>
 					</ul>
 				</li>
 		
-				<li class="nd1"><a href="DSSachNV.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
+				<li class="nd1"><a href="#"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
 					<ul class="sub-menu">
 						<li class ="nd1"><a href="DSSachNV.php">Danh mục Sách</a></li>
 						<li><a href="NhapSachNV.php">Nhập sách</a></li>
@@ -79,48 +106,64 @@ session_start();
 		<div class="content">
 			<div class="div">
 				<p class="div-left">DANH MỤC SÁCH</p> 
-				<p class="div-right">TỔNG:</p> 
+				<p class="div-right">TỔNG:<?php echo $totalEmployees; ?></p> 
 		   </div>
-		   
-		   <table class="table-5-cols">
-			   <thead>
-				 <tr>
-				   <th>Mã Sách</th>
-				   <th>Nhan Đề</th>
-				   <th>Thể Loại</th>
-				   <th>Ngày Nhập</th>
-				   <th>Tác Giả</th>
-				   <th>Nhà Xuất Bản</th>
-				   <th>Năm Xuất Bản</th>
-				   <th>Giá Nhập</th>
-				   <th>Số Lượng</th>
-				   <th>Thành Tiền</th>
-				   <th>Chức Năng</th>
-				 </tr>
-			   </thead>
-			   <tbody>
-				 <tr>
-				   <td>Data 1</td>
-				   <td>Data 2</td>
-				   <td>Data 3</td>
-				   <td>Data 4</td>
-				   <td>Data 1</td>
-				   <td>Data 2</td>
-				   <td>Data 3</td>
-				   <td>Data 4</td>
-				   <td>Data 1</td>
-				   <td>Data 2</td>
-				   <td class="btn-cn">
-				   <button class="btn-edit">Sửa</button>
-				   <button class="btn-delete">Xóa</button>
-				   </td>
-				 </tr>
-				 <tr>
-				 </tr>
-				 
-			   </tbody>
-			 </table>
-			 <button class="btn-add">Thêm sách</button>
+		   <?php
+
+			// Kiểm tra xem session có chứa dữ liệu tài khoản nhân viên không
+			if (isset($_SESSION['sach']) && !empty($_SESSION['sach'])) {
+				echo '<table class="table-5-cols">';
+				echo '<thead>
+						<tr>
+							<th>Mã Sách</th>
+							<th>Ngày Nhập</th>
+							<th>Nhan Đề</th>
+							<th>Thể Loại</th>
+							<th>Tác Giả</th>
+							<th>Năm Xuất Bản</th>
+							<th>Nhà Xuất Bản</th>
+							<th>Giá Nhập</th>
+							<th>Giá Bán</th>
+							<th>Số Lượng</th>
+							<th>Chức Năng</th>
+						</tr>
+					</thead>
+					<tbody>';
+				foreach ($_SESSION['sach'] as $row) {
+					?>
+					<tr>
+						
+						<td><?php echo htmlspecialchars($row["idsach"]); ?></td>
+						<td><?php echo htmlspecialchars($row["ngaynhap"]); ?></td>
+						<?php 
+							$dayin = $row["ngaynhap"];
+							$fixedDate = new DateTime($dayin);
+							$today = new DateTime();
+							$interval = $fixedDate->diff($today);
+							?>
+							<!-- <td><?php echo $interval->m . " tháng và " . $interval->d . " ngày."; ?></td> -->
+						<td><?php echo htmlspecialchars($row["nhande"]); ?></td>
+						<td><?php echo htmlspecialchars($row["theloai"]); ?></td>
+						<td><?php echo htmlspecialchars($row["tacgia"]); ?></td>
+						<td><?php echo htmlspecialchars($row["namxb"]); ?></td>
+						<td><?php echo htmlspecialchars($row["nhaxb"]); ?></td>
+						<td><?php echo htmlspecialchars($row["gianhap"]); ?></td>
+						<td><?php echo htmlspecialchars($row["giaban"]); ?></td>
+						<td><?php echo htmlspecialchars($row["slkho"]); ?></td>
+						<td>
+							<button class="btn-edit" onclick="suaS('<?php echo $row['idsach']; ?>')">Sửa</button>
+							<button class="btn-delete" onclick="xoaS('<?php echo $row['idsach']; ?>')">Xóa</button>
+						</td>
+					</tr>
+					<?php
+				}
+				unset($_SESSION['sach']);
+				echo '</tbody></table>';
+			} else {
+				echo '<p>Không có dữ liệu nào!</p>';
+			}
+			?>
+			 <button class="btn-add" onclick="themS()">Thêm sách</button>
 		</div>
 	</div>
 	
@@ -137,5 +180,19 @@ session_start();
 			</footer>
 		</div>
 
+		<script>		
+		function themS() {
+			window.location.href = "NhapSachNV.php";
+		}
+		function suaS(index) {
+			window.location.href = "SuaSachNV.php?index=" + index;
+		}
+		function xoaS(index) {
+		var xoaNV = confirm("Bạn có chắc chắn muốn xóa sách này?");
+		if (xoaNV) {
+			window.location.href = "XoaSNV.php?index=" + index;
+		}		
+	}
+	</script>	
 </body>
 </html>

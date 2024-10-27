@@ -3,23 +3,25 @@
 session_start();
 include "../connectDB.php";
 $index = $_GET['index'];
-$sql="Select idnv,email,matkhau From taikhoan where idtaikhoan='$index'";
+$sql="SELECT taikhoan.*, nhanvien.manv 
+        FROM taikhoan 
+        JOIN nhanvien ON taikhoan.idnv = nhanvien.idnv 
+        WHERE taikhoan.idtaikhoan = '$index'";
 $data=mysqli_query($conn,$sql);
 if ($data && mysqli_num_rows($data) > 0) {
 	$row = mysqli_fetch_object($data);
-	$idnv = $row->idnv;
+	$idnv = $row->manv;
 	$email = $row->email;
 	$matkhau = $row->matkhau;
 }
 if(isset($_POST['btnLuu'])){
 	//lấy các giá trị trên đk đưa vào biến
 	// $manv=$_POST['txtManv'];
-	$idnvmoi=$_POST['txtidnv'];
 	$emailmoi=$_POST['txtemail'];
 	$mkmoi=$_POST['txtmatkhau'];
 	//thực hiện câu lệnh sql lưu data vào bảng trong db
-	$sql1="Update taikhoan Set idnv='$idnvmoi',email='$emailmoi',matkhau='$mkmoi',
-	 Where taikhoan.idtaikhoan='$index'";
+	$sql1="Update taikhoan Set email='$emailmoi',matkhau='$mkmoi'
+	 Where idtaikhoan='$index'";
 	 echo $sql1;
 	$kq=mysqli_query($conn,$sql1);
 	if($kq){
@@ -104,7 +106,7 @@ if(isset($_POST['btnLuu'])){
 			<h4>SỬA THÔNG TIN TÀI KHOẢN</h4>
 			<div class="form-container">
 				<div class="form-group">
-					<label for="">ID Nhân Viên</label>
+					<label for="">Mã Nhân Viên</label>
 					<input type="text" id="" name="txtidnv" value="<?php echo $idnv ?>" disabled>
 				</div>
 			<div class="form-group">
@@ -118,7 +120,7 @@ if(isset($_POST['btnLuu'])){
 			
 		</div>
 		<div class="buttons-container">
-			<button class="btnLuu">Lưu</button>
+			<button  name="btnLuu">Lưu</button>
 			</div>
 		</div>
 		</form>

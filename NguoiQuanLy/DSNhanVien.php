@@ -1,17 +1,17 @@
 <!doctype html>
 <?php
+session_start();
 include '../connectDB.php';
 
-// Khởi tạo session cho nhanvien nếu chưa có
+
+// Khởi tạo session cho taikhonan nếu chưa có
 if (!isset($_SESSION['nhanvien'])) {
     $_SESSION['nhanvien'] = [];
 }
 
-// Truy vấn dữ liệu từ bảng nhanvien
-$sql = "SELECT * FROM nhanvien";
-$data = mysqli_query($conn, $sql);
-
-// Kiểm tra xem truy vấn có thành công không
+// Truy vấn dữ liệu từ bảng taikhoan
+$sql="select * from nhanvien ";
+$data=mysqli_query($conn, $sql);
 if ($data) {
     // Lưu dữ liệu vào session
     while ($row = mysqli_fetch_assoc($data)) {
@@ -20,10 +20,23 @@ if ($data) {
 } else {
     echo "Lỗi truy vấn: " . mysqli_error($conn);
 }
+// Truy vấn dữ liệu từ bảng nhanvien
+$sqlCount = "SELECT COUNT(*) as total FROM nhanvien";
+$countResult = mysqli_query($conn, $sqlCount);
+$totalEmployees = 0;
 
-// Đóng kết nối
-mysqli_close($conn);
+if ($countResult) {
+    $countRow = mysqli_fetch_assoc($countResult);
+    $totalEmployees = $countRow['total']; // Lưu số lượng nhân viên vào biến
+} else {
+    echo "Lỗi truy vấn: " . mysqli_error($conn);
+}
+
+
 ?>
+
+				
+				
 <html>
 <head>
 <meta charset="utf-8">
@@ -67,13 +80,12 @@ text-align: center;
 	<div class="td">
 		<h3 class="chu">NHÀ SÁCH CÓ ĐỦ CẢ</h3>
 			<div class="tieude1">
-				<!-- <i class="fa-solid fa-magnifying-glass"></i>
-				<input type="text" id="timkiem" name="timkiem" class="td2" placeholder="Tìm kiếm tựa sách, tác giả, thể loại">
-				<button class="tk">Tìm</button> -->
-				<div class="search-container">
+			<div class="search-container">
 					<input type="text" class="search-input" placeholder="Nhập từ khóa">
 					<button class="search-button">Tìm kiếm</button>
 				</div>
+
+				
 				<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
 				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
@@ -114,60 +126,67 @@ text-align: center;
 			</ul>
 		</div>
             
-			<div class="content">
-				<div class= "div_left">DANH SÁCH NHÂN VIÊN HIỆN TẠI</div>
-				<div class="div_right">Tổng số: </div>
-				<?php
-				if (isset($_SESSION['nhanvien']) && !empty($_SESSION['nhanvien'])) {
-					echo '<table class="table-5-cols">';
-					echo '<thead>
-							<tr>
+		<div class="content">
+			<div class="div_left">DANH SÁCH NHÂN VIÊN HIỆN TẠI</div>
+			<div class="div_right">Tổng số: <?php echo $totalEmployees; ?></div>
+			<?php
+
+			// Kiểm tra xem session có chứa dữ liệu tài khoản nhân viên không
+			if (isset($_SESSION['nhanvien']) && !empty($_SESSION['nhanvien'])) {
+				echo '<table class="table-5-cols">';
+				echo '<thead>
+						<tr>
 							<th>Mã Nhân Viên</th>
-							<th>Họ Tên Nhân Viên</th>
+							<th>Họ Tên </th>
 							<th>Ngày sinh</th>
+							<th>Giới tính</th>
 							<th>Số Điện Thoại</th>
 							<th>Địa chỉ</th>
 							<th>Ngày vào làm</th>
-							<th>Thời gian làm việc(tháng)</th>
+							<th>Thời gian làm việc (tháng)</th>
 							<th>Chức vụ</th>
 							<th>Lương cơ bản (tháng)</th>
 							<th>Chức Năng</th>
-							</tr>
-						</thead>';
-					foreach ($_SESSION['nhanvien'] as $row) {
-						?>
-						<tbody>
-						<tr>
-							<td><?php echo $row["manv"]; ?></td>
-							<td><?php echo $row["tennv"]; ?></td>
-							<td><?php echo $row["ngaysinh"]; ?></td>
-							<td><?php echo $row["sdt"]; ?></td>
-							<td><?php echo $row["diachinv"]; ?></td>
-							<td><?php echo $row["ngayvaolam"]; ?></td>
-							<?php 
+						</tr>
+					</thead>
+					<tbody>';
+				foreach ($_SESSION['nhanvien'] as $row) {
+					?>
+					<tr>
+						
+						<td><?php echo htmlspecialchars($row["manv"]); ?></td>
+						<td><?php echo htmlspecialchars($row["tennv"]); ?></td>
+						<td><?php echo htmlspecialchars($row["ngaysinh"]); ?></td>
+						<td><?php echo htmlspecialchars($row["gioitinh"]); ?></td>
+						<td><?php echo htmlspecialchars($row["sdt"]); ?></td>
+						<td><?php echo htmlspecialchars($row["diachinv"]); ?></td>
+						<td><?php echo htmlspecialchars($row["ngayvaolam"]); ?></td>
+						<?php 
 							$dayin = $row["ngayvaolam"];
 							$fixedDate = new DateTime($dayin);
 							$today = new DateTime();
 							$interval = $fixedDate->diff($today);
 							?>
 							<td><?php echo $interval->m . " tháng và " . $interval->d . " ngày."; ?></td>
-							<td><?php echo $row["chucvunv"]; ?></td>
-							<td><?php echo $row["luongcoban"]; ?></td>
-							<td>
-								<button class="btn-edit" onclick="suaNV('<?php echo $row['manv']; ?>')">Sửa</button>
-								<button class="btn-delete" onclick="xoaNV('<?php echo $row['manv']; ?>')">Xóa</button>
-							</td>
-						</tr>
-						</tbody>
-						<?php
-					}
-					echo '</table>';
-				} else {
-					echo '<p>Không có dữ liệu nhân viên nào!</p>';
+						
+						<td><?php echo htmlspecialchars($row["chucvunv"]); ?></td>
+						<td><?php echo htmlspecialchars($row["luongcoban"]); ?></td>
+						<td>
+							<button class="btn-edit" onclick="suaNV('<?php echo $row['manv']; ?>')">Sửa</button>
+							<button class="btn-delete" onclick="xoaNV('<?php echo $row['manv']; ?>')">Xóa</button>
+						</td>
+					</tr>
+					<?php
 				}
-				?>
-				<button class="btn-add" onclick="themNV()">Thêm hồ sơ nhân viên</button>   
-			</div>
+				unset($_SESSION['nhanvien']);
+				echo '</tbody></table>';
+			} else {
+				echo '<p>Không có dữ liệu tài khoản nào!</p>';
+			}
+			?>
+			
+			<button class="btn-add" onclick="themNV()">Thêm hồ sơ nhân viên</button>
+		</div>
 			
 	</div>
 	<!-- Footer -->
@@ -190,7 +209,7 @@ text-align: center;
 		
 	}
 	function xoaNV(index) {
-		var xoaNV = confirm("Bạn có chắc chắn muốn xóa nhân viên này khỏi hóa đơn?");
+		var xoaNV = confirm("Bạn có chắc chắn muốn xóa nhân viên này?");
 		if (xoaNV) {
 			window.location.href = "XoaNV.php?index=" + index;
 		}		

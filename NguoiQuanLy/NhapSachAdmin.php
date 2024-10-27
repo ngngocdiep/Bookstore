@@ -14,7 +14,6 @@ if(isset($_POST["btnLuu"])){
 		$gb=$_POST['txtGiaban'];
 		$sl=$_POST['txtSoluong'];
 		$tt=$_POST['txtThanhtien'];
-
 		// Kiểm tra xem ngày nhập có nhỏ hơn ngày mai không
 		$today = strtotime(date("Y-m-d"));
 		$inputDate = strtotime($nn);
@@ -23,6 +22,18 @@ if(isset($_POST["btnLuu"])){
 		if ($inputDate >= $tomorrow) {
 			echo '<script>alert("Thất bại. Ngày nhập không hợp lệ.")</script>';
 		} else {
+
+			// B4: tạo câu lệnh sql để thực hiện chèn dl vào bảng
+			$sql1 = "INSERT INTO sach VALUES ('$id', '$nn', '$nd', '$ls', '$tg', '$nhaxb', '$namxb', '$gn', '$gb', '$sl', '$tt')";
+			$kq1 = mysqli_query($conn, $sql1);
+	
+			if ($kq1) {
+				echo '<script>alert("Thêm mới thành công")</script>';
+			} else {
+				echo '<script>alert("Thêm mới thất bại")</script>';
+			}
+		}
+
 			// lấy idsach và slkho từ sach, nếu tồn tại->update, tăng số lương, nếu chưa->insert
 			$infor="select idsach, slkho from sach where sach.idsach='$id'";
 			$kqinfor=mysqli_query($conn,$infor);
@@ -35,9 +46,9 @@ if(isset($_POST["btnLuu"])){
 				$update=mysqli_query($conn,$updatesach);
 	
 				if ($update) {
-					echo '<script>alert("Thêm mới thành công"); window.location.href="NhapSachAmin.php"</script>';
+					echo '<script>alert("Thêm mới thành công"); window.location.href="NhapSachNV.php"</script>';
 				} else {
-					echo '<script>alert("Thêm mới thất bại"); window.location.href="NhapSachAdmin.php"</script>';
+					echo '<script>alert("Thêm mới thất bại"); window.location.href="NhapSachNV.php"</script>';
 				}
 			} else{
 				// B4: tạo câu lệnh sql để thực hiện chèn dl vào bảng
@@ -54,8 +65,11 @@ if(isset($_POST["btnLuu"])){
 			values ('$id','$nn','$sl','$thanhtien')";
 
 		}
-		
-	}
+
+	
+
+	
+	
 	//B5: đóng kết nối
 	mysqli_close($conn);
 ?>
@@ -76,31 +90,35 @@ if(isset($_POST["btnLuu"])){
 	<link rel="stylesheet" href ="admin.css" >
 	
 
-<title>Nhập sách mới</title>
+<title>NhapSach</title>
 
 </head>
+
 <body>
 	<div class="td">
 		<h3 class="chu">NHÀ SÁCH CÓ ĐỦ CẢ</h3>
 			<div class="tieude1">
+				<!-- <i class="fa-solid fa-magnifying-glass"></i>
+				<input type="text" id="timkiem" name="timkiem" class="td2" placeholder="Tìm kiếm tựa sách, tác giả, thể loại">
+				<button class="tk">Tìm</button> -->
 				<div class="search-container">
-					<input type="text" class="search-input" placeholder="Nhập từ khóa">
+					<input type="text" class="search-input" placeholder="Nhập tên sản phẩm">
 					<button class="search-button">Tìm kiếm</button>
 				</div>
-				<i class="fa-solid fa-envelope"></i>
+								<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
 				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
-				<a href="NhanVien/HoSoUser.php"><i class="fa-solid fa-user"></i></a>
+				<a href="HoSoUser.php"><i class="fa-solid fa-user"></i></a>
 			</div>
 	</div>
 	
 	<div class="nd">
-		<div class="menu">
+	<div class="menu">
 			<ul>
 				<li ><a href="TrangChuAdmin.php"><i class="fa-solid fa-house"></i>Trang Chủ</a></li>
-				<li ><a href="DSNhanVien.php"><i class="fa-solid fa-person"></i>Quản Lý Nhân Viên</a>
+				<li class ="nd1"><a href="DSNhanVien.php"><i class="fa-solid fa-person"></i>Quản Lý Nhân Viên</a>
 					<ul class="sub-menu">
-						<li><a href="DSNhanVien.php">Danh sách nhân viên</a></li>
+						<li><a href="DSNhanVien.php" style="background-color:  #88cbaf;">Danh sách nhân viên</a></li>
 						<li><a href="DSTaiKhoanNV.php">Danh sách tài khoản nhân viên</a></li>
 						<li><a href="ChamCongNV.php">Chấm công nhân viên</a></li>
 					</ul>
@@ -111,7 +129,7 @@ if(isset($_POST["btnLuu"])){
 						<li><a href="#">Xử lý hoàn/hủy đơn</a></li>
 					</ul>		
 				</li>	
-				<li class ="nd1"><a href="DSSach.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
+				<li><a href="DSSach.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
 					<ul class="sub-menu">
 						<li><a href="DSSach.php">Danh sách Sách</a></li>
 						<li><a href="NhapSachAdmin.php">Nhập sách</a></li>
@@ -124,63 +142,79 @@ if(isset($_POST["btnLuu"])){
 						<li><a href="#">Tồn kho</a></li>
 					</ul>
 				</li>
-				</ul>
-			</div>
-		<!-- Thong tin nhap sach -->
+			</ul>
+		</div>
+     
+		<form method="post" action="" enctype="multipart/form-data">
 		<div class="content">
-			<h4>NHẬP SÁCH</h4>
+			<h4>NHẬP THÊM SÁCH</h4>
 			<div class="form-container">
-			<div class="form-group">
-				<label for="ngaynhap">Ngày nhập</label>
-				<input type="date" id="ngay-nhap">
+				<div class="form-group">
+					<label for="idsach">ID sách</label>
+					<input type="text" id="id-sach" name="txtIdsach" >
+				</div>
+				<div class="form-group">
+					<label for="ngaynhap">Ngày nhập</label>
+					<input type="date" id="ngay-nhap" name="txtNgaynhap" >
+				</div>
+				<div class="form-group">
+					<label for="nhan-de">Nhan đề</label>
+					<input type="text" id="nhan-de" name="txtNhande">
+				</div>
+				<div class="form-group">
+					<label for="loai-sach">Loại sách</label>
+					<select id="loai-sach" name="ddlsach">
+						<option >---Chọn loại sách---</option>
+						<option>Ngôn tình</option>
+						<option>Trinh thám</option>
+						<option >Tiểu thuyết</option>
+						<option>Kinh tế</option>
+						<option>Văn học</option>
+						<option >Chính trị</option>
+						<option >Xã hội</option>
+						<option>Khác</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="stacgia">Tác giả</label>
+					<input type="text" id="tacgia" name="txtTacgia" >
+				</div>
+				<div class="form-group">
+					<label for="nha-xuat-ban">Nhà xuất bản</label>
+					<input type="text" id="nha-xuat-ban" name="txtNhaxb" >
+				</div>
+				<div class="form-group">
+					<label for="nam-xuat-ban">Năm xuất bản</label>
+					<input type="text" id="nam-xuat-ban" name="txtNamxb" >
+				</div>
+				<div class="form-group ">
+					<label for="gia-bia">Giá nhập</label>
+					<input type="text" id="gia-bia" name="txtGianhap" oninput="updateThanhTien()">
+				</div>
+				<div class="form-group">
+					<label for="giaban">Giá bán</label>
+					<input type="text" id="giaban" name="txtGiaban">
+				</div>
+				<div class="form-group">
+					<label for="soluong">Số lượng nhập</label>
+					<input type="number" id="soluong" name="txtSoluong" oninput="updateThanhTien()" >
+				</div>
+				<div class="form-group">
+					<label for="thanh-tien">Thành tiền</label>
+					<input type="number" id="thanh-tien" name="txtThanhtien"  readonly>
+				</div>
 			</div>
-			<div class="form-group">
-				<label for="nhan-de">Nhan đề</label>
-				<input type="text" id="nhan-de">
-			</div>
-			<div class="form-group">
-				<label for="loai-sach">Loại sách</label>
-				<select id="loai-sach">
-					<option value="">Chọn loại sách</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<label for="stacgia">Tác giả</label>
-				<input type="text" id="tacgia">
-			</div>
-			<div class="form-group">
-				<label for="nha-xuat-ban">Nhà xuất bản</label>
-				<input type="text" id="nha-xuat-ban">
-			</div>
-			<div class="form-group">
-				<label for="nam-xuat-ban">Năm xuất bản</label>
-				<input type="text" id="nam-xuat-ban">
-			</div>
-			<div class="form-group ">
-				<label for="gia-bia">Giá nhập</label>
-				<input type="text" id="gia-bia" oninput="updateThanhTien()">
-			</div>
-			<div class="form-group">
-				<label for="giaban">Giá bán</label>
-				<input type="text" id="giaban">
-			</div>
-			<div class="form-group">
-				<label for="soluong">Số lượng</label>
-				<input type="text" id="soluong" oninput="updateThanhTien()">
-			</div>
-			<div class="form-group">
-				<label for="thanh-tien">Thành tiền</label>
-				<input type="number" id="thanh-tien" readonly>
-			</div>
+			<div class="buttons-container">
+				<button type="submit" name="btnLuu">Lưu</button>
+				</div>
 		</div>
-		<div class="buttons-container">
-			<button>Lưu</button>
-			</div>
-		</div>
+		</form>
 	</div>
+	
 	<!-- Footer -->
-	<div class="container1">
+		<div class="container1">
 			<footer class="py-31 my-41">
+				<ul class="logo"><img src="imgNV/logoCoducanentrang.png" width="20%"></ul>
 				<ul class="nav justify-content-center1 border-bottom1 pb-31 mb-31">
 				<li class="nav-item1"><a href="#" class="nav-link1 px-2 text-body-secondary">Home</a></li>
 				<li class="nav-item1"><a href="#" class="nav-link1 px-2 text-body-secondary">FAQs</a></li>
@@ -188,7 +222,7 @@ if(isset($_POST["btnLuu"])){
 				</ul>
 				<p class="text-center1 text-body-secondary1">© 2024 Company, Inc</p>
 			</footer>
-	</div>
+		</div>
 	<script>
         function updateThanhTien() {
             // Lấy giá nhập và số lượng từ các input

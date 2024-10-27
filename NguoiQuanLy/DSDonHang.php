@@ -1,7 +1,9 @@
 <!doctype html>
 <?php
 session_start();
-
+include '../connectDB.php';
+$sql="select * from donhang ";
+$data=mysqli_query($conn, $sql);
 ?>
 <html>
 <head>
@@ -17,10 +19,11 @@ session_start();
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<link rel="stylesheet" href ="admin.css" >
-	
+	<link rel="stylesheet" href ="content.css" >
+    <link rel="stylesheet" href ="admin.css" >
 
-<title>DSDonHang</title>
+
+<title>Quản lý đơn hàng</title>
 
 </head>
 
@@ -28,17 +31,13 @@ session_start();
 	<div class="td">
 		<h3 class="chu">NHÀ SÁCH CÓ ĐỦ CẢ</h3>
 			<div class="tieude1">
-				<!-- <i class="fa-solid fa-magnifying-glass"></i>
-				<input type="text" id="timkiem" name="timkiem" class="td2" placeholder="Tìm kiếm tựa sách, tác giả, thể loại">
-				<button class="tk">Tìm</button> -->
-				<div class="search-container">
-					<input type="text" class="search-input" placeholder="Nhập từ khóa">
+					<input type="text" class="search-input" placeholder="Nhập tên sản phẩm">
 					<button class="search-button">Tìm kiếm</button>
 				</div>
-				<i class="fa-solid fa-envelope"></i>
+								<i class="fa-solid fa-envelope"></i>
 				<i class="fa-solid fa-bell"></i>
 				<a href="../Logout.php"><i class="fa-solid fa-right-from-bracket" ></i></a>
-				<a href="NhanVien/HoSoUser.php"><i class="fa-solid fa-user"></i></a>
+				<a href="HoSoUser.php"><i class="fa-solid fa-user"></i></a>
 			</div>
 	</div>
 	
@@ -53,9 +52,9 @@ session_start();
 						<li><a href="ChamCongNV.php">Chấm công nhân viên</a></li>
 					</ul>
 				</li>
-				<li class ="nd1"><a href="DSDonHang.php"><i class="fa-solid fa-cart-shopping"></i>Quản Lý Đơn Hàng</a>
+				<li><a href="DSDonHang.php"><i class="fa-solid fa-cart-shopping"></i>Quản Lý Đơn Hàng</a>
 					<ul class="sub-menu">
-						<li ><a href="DSDonHang.php">Danh sách đơn hàng</a></li>
+						<li class ="nd1"><a href="DSDonHang.php">Danh sách đơn hàng</a></li>
 						<li><a href="#">Xử lý hoàn/hủy đơn</a></li>
 					</ul>		
 				</li>	
@@ -74,47 +73,68 @@ session_start();
 				</li>
 			</ul>
 		</div>
-            
+
 			<div class="content">
-			<div class="div">
-					 <p class="div-left">DANH SÁCH</p> 
-					 <p class="div-right">TỔNG:</p> 
-				</div>
-				<table class="table-5-cols">
-					<thead>
-					  <tr>
-						<th>Mã Đơn Hàng</th>
-						<th>Ngày Tạo</th>
-						<th>Tổng Tiền</th>
-						<th>Số Lượng Sản Phẩm</th>
-						<th>Chức Năng</th>
-					  </tr>
-					</thead>
-					<tbody>
-					  <tr>
-						<td>Data 1</td>
-						<td>Data 2</td>
-						<td>Data 3</td>
-						<td>Data 4</td>
-						<td>
-                        <button class="btn-edit">Sửa</button>
-                        </td>
-					  </tr>
-					  <tr>
-						<td>Data 6</td>
-						<td>Data 7</td>
-						<td>Data 8</td>
-						<td>Data 9</td>
-						<td>Data 10</td>
-					  </tr>
-					  
-					</tbody>
-				  </table>
-			</div>
-	</div>
+	            <h2>Quản lý đơn hàng</h2>
+	
+                    <!-- Form lọc đơn hàng -->
+                    <form class="filter-form" method="GET" action="#">
+                        <label for="order-id">Mã đơn hàng:</label>
+                        <input type="text" id="order-id" name="order-id" placeholder="Nhập mã đơn hàng">
+                        
+                        <label for="status">Trạng thái:</label>
+                        <select id="status" name="status">
+                            <option value="">Tất cả</option>
+                            <option value="pending">Chờ xử lý</option>
+                            <option value="processing">Đang xử lý</option>
+                            <option value="completed">Hoàn thành</option>
+                            <option value="cancelled">Đã hủy</option>
+                        </select>
+                        
+                        <button class="stylebutton"  type="submit">Lọc</button>
+                    </form>
+
+                    <!-- Bảng hiển thị đơn hàng -->
+                    <table class="order-table">
+                        <thead>
+                            <tr>
+                                <th>Mã đơn hàng</th>
+                                <th>Khách hàng</th>
+                                <th>Ngày đặt</th>
+                                <th>Trạng thái</th>
+                                <th>Tổng tiền</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+						<tbody>
+							<?php
+							if ($data->num_rows > 0) {
+								while(($row = $data->fetch_assoc())){
+									?>
+								<tr>
+									<td><?php echo $row["iddonhang"]?></td>
+									<td><?php echo $row["ngaytaodh"]?></td>
+									<td><?php echo $row["ngaytaodh"]?></td>
+									<td><?php echo $row["tinhtrang"]?></td>
+									<td><?php echo $row["tongtien"]?></td>
+									<td>
+										<button class="stylebutton" >Hoàn thành</button>
+										<button class="stylebutton" >Hủy đơn</button>
+									</td>			
+								</tr>
+								<?php
+								}
+							}
+							?>
+						</tbody>
+                    </table>
+                </div>
+    </div>
+	
 	<!-- Footer -->
 		<div class="container1">
 			<footer class="py-31 my-41">
+				<ul class="logo"><img src="logoCoducanentrang.png" width="20%"></ul>
 				<ul class="nav justify-content-center1 border-bottom1 pb-31 mb-31">
 				<li class="nav-item1"><a href="#" class="nav-link1 px-2 text-body-secondary">Home</a></li>
 				<li class="nav-item1"><a href="#" class="nav-link1 px-2 text-body-secondary">FAQs</a></li>

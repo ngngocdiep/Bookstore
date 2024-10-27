@@ -20,6 +20,18 @@ if ($data) {
 } else {
     echo "Lỗi truy vấn: " . mysqli_error($conn);
 }
+
+// Truy vấn dữ liệu từ bảng nhanvien
+$sqlCount = "SELECT COUNT(*) as total FROM taikhoan where idquyen='1'";
+$countResult = mysqli_query($conn, $sqlCount);
+$totalEmployees = 0;
+
+if ($countResult) {
+    $countRow = mysqli_fetch_assoc($countResult);
+    $totalEmployees = $countRow['total']; // Lưu số lượng nhân viên vào biến
+} else {
+    echo "Lỗi truy vấn: " . mysqli_error($conn);
+}
 ?>
 <html>
 <head>
@@ -111,8 +123,9 @@ text-align: center;
 			</ul>
 		</div>
             
-			<div class="content">
-				<h4>DANH SÁCH TÀI KHOẢN</h4>
+		<div class="content">
+			<div class="div_left">DANH SÁCH TÀI KHOẢN HIỆN TẠI</div>
+			<div class="div_right">Tổng số: <?php echo $totalEmployees; ?></div>
 			<?php
 
 			// Kiểm tra xem session có chứa dữ liệu tài khoản nhân viên không
@@ -167,9 +180,12 @@ text-align: center;
 		function suaTK(index) {
 			window.location.href = "SuaTK.php?index=" + index;
 		}
-		function xoaTK() {
-			window.location.href = "XoaTKhoan.php";
-		}
+		function xoaTK(index) {
+		var xoaNV = confirm("Bạn có chắc chắn muốn xóa nhân viên này khỏi hóa đơn?");
+		if (xoaNV) {
+			window.location.href = "XoaTKNV.php?index=" + index;
+		}		
+	}
 	</script>	
 </body>
 </html>

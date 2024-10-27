@@ -34,6 +34,11 @@ body {
 
 }
 
+.search-results {
+  margin-top: 20px;
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+}
 .fa-envelope {
     padding-left: 3%;
     padding-right: 3%;

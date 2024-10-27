@@ -1,7 +1,49 @@
 <!doctype html>
 <?php
 session_start();
+include "../connectDB.php";
+$index = $_GET['index'];
+$sql="Select * From sach where idsach='$index'";
+$data=mysqli_query($conn,$sql);
+if ($data && mysqli_num_rows($data) > 0) {
+	$row = mysqli_fetch_object($data);
+	$idsach = $row->idsach;
+	$ngaynhap = $row->ngaynhap;
+	$nhande = $row->nhande;
+	$theloai = $row->theloai;
+	$tacgia = $row->tacgia;
+	$nhaxb= $row->nhaxb;
+	$namxb= $row->namxb;
+	$gianhap= $row->gianhap;
+	$giaban= $row->giaban;
+	$sl= $row->slkho;
+}
+if(isset($_POST['btnLuu'])){
+	//lấy các giá trị trên đk đưa vào biến
+	// $manv=$_POST['txtManv'];
+	$ngaynhapmoi=$_POST['ngaynhap'];
+	$nhandemoi=$_POST['nhande'];
+	$theloaimoi=$_POST['theloai'];
+	$tacgiamoi=$_POST['tacgia'];
+	$nhaxbmoi=$_POST['nhaxb'];
+	$namxbmoi=$_POST['namxb'];
+	$gianhapmoi=$_POST['gianhap'];
+	$giabanmoi=$_POST['giaban'];
+	$slmoi=$_POST['sl'];
+	//thực hiện câu lệnh sql lưu data vào bảng trong db
+	$sql1="Update sach Set ngaynhap='$ngaynhapmoi',nhande='$nhandemoi',theloai='$theloaimoi',tacgia='$tacgiamoi',nhaxb='$nhaxbmoi',
+	namxb='$namxbmoi',gianhap='$gianhapmoi',giaban='$giabanmoi',slkho='$slmoi' Where sach.idsach='$index'";
+	
+	$kq=mysqli_query($conn,$sql1);
+	if($kq){
 
+		echo'<script>alert("Thay đổi thành công"); window.location.href="DSSachNV.php" </script>';
+
+	}else{
+		echo'<script>alert("Thay đổi thất bại")</script>';
+		
+	}
+}
 ?>
 <html>
 <head>
@@ -73,56 +115,70 @@ session_start();
 				
 			</ul>
 		</div>
+		<form method="post" action="">
 		<div class="content">
 			<h4>SỬA THÔNG TIN SÁCH</h4>
 			<div class="form-container">
+			<div class="form-group">
+					<label for="ngaynhap">ID sách</label>
+					<input type="text" id="idsach" name="idsach" value="<?php echo $idsach ?>" disabled>
+				</div>
 				<div class="form-group">
 					<label for="ngaynhap">Ngày nhập</label>
-					<input type="date" id="ngay-nhap">
+					<input type="date" id="ngay-nhap" name="ngaynhap" value="<?php echo $ngaynhap ?>">
 				</div>
 				<div class="form-group">
 					<label for="nhan-de">Nhan đề</label>
-					<input type="text" id="nhan-de">
+					<input type="text" id="nhan-de" name="nhande" value="<?php echo $nhande ?>">
 				</div>
 				<div class="form-group">
 					<label for="loai-sach">Loại sách</label>
-					<select id="loai-sach">
-						<option value="">Chọn loại sách</option>
+					<select id="loai-sach" name="theloai" value="<?php echo $theloai ?>">
+					<option ><?php echo $theloai ?></option>
+						<option>Ngôn tình</option>
+						<option>Trinh thám</option>
+						<option >Tiểu thuyết</option>
+						<option>Kinh tế</option>
+						<option>Văn học</option>
+						<option >Chính trị</option>
+						<option >Xã hội</option>
+						<option>Khác</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<label for="stacgia">Tác giả</label>
-					<input type="text" id="tacgia">
+					<input type="text" id="tacgia" name="tacgia" value="<?php echo $tacgia ?>">
 				</div>
 				<div class="form-group">
 					<label for="nha-xuat-ban">Nhà xuất bản</label>
-					<input type="text" id="nha-xuat-ban">
+					<input type="text" id="nha-xuat-ban" name="nhaxb" value="<?php echo $nhaxb ?>">
 				</div>
 				<div class="form-group">
 					<label for="nam-xuat-ban">Năm xuất bản</label>
-					<input type="text" id="nam-xuat-ban">
+					<input type="text" id="nam-xuat-ban" name="namxb" value="<?php echo $namxb ?>">
 				</div>
 				<div class="form-group ">
 					<label for="gia-bia">Giá nhập</label>
-					<input type="text" id="gia-bia">
+					<input type="text" id="gia-bia" name="gianhap"  oninput="updateThanhTien()" value="<?php echo $gianhap ?>">
 				</div>
 				<div class="form-group">
 					<label for="giaban">Giá bán</label>
-					<input type="text" id="giaban">
+					<input type="text" id="giaban" name="giaban" value="<?php echo $giaban ?>">
 				</div>
 				<div class="form-group">
 					<label for="soluong">Số lượng</label>
-					<input type="text" id="soluong">
+					<input type="text" id="soluong" name="sl" oninput="updateThanhTien()" value="<?php echo $sl ?>">
 				</div>
-				<div class="form-group">
+				<!-- <div class="form-group">
 					<label for="thanh-tien">Thành tiền</label>
-					<input type="text" id="thanh-tien">
-				</div>
+					<input type="text" id="thanh-tien" name="tt" readonly>
+				</div> -->
 			</div>
 			<div class="buttons-container">
-				<button>Lưu</button>
+				<button name="btnLuu">Lưu</button>
 				</div>
 		</div>
+		</form>
 	</div>
 	
 	<!-- Footer -->
@@ -137,6 +193,19 @@ session_start();
 				<p class="text-center1 text-body-secondary1">© 2024 Company, Inc</p>
 			</footer>
 		</div>
+		<script>
+        function updateThanhTien() {
+            // Lấy giá nhập và số lượng từ các input
+            const giaNhap = parseFloat(document.getElementById('gia-bia').value) || 0;
+            const soLuong = parseFloat(document.getElementById('soluong').value) || 0;
+
+            // Tính thành tiền
+            const thanhTien = giaNhap * soLuong;
+
+            // Cập nhật giá trị vào input thành tiền
+            document.getElementById('thanh-tien').value = thanhTien.toFixed(2); // Làm tròn đến 2 chữ số thập phân
+        }
+    </script>
 
 </body>
 </html>

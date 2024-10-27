@@ -120,7 +120,7 @@ mysqli_close($conn);
 			</div>
 			<div class="form-group">
 				<label for="sdt">Số Điện Thoại</label>
-				<input type="text" name="sdt" required>
+				<input type="tel" name="sdt" required>
 			</div>
 			<div class="form-group">
 				<label for="gioitinh">Giới Tính</label>

@@ -1,0 +1,173 @@
+/* HoaDon content */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+  }
+  
+  th {
+    background-color: #a96c7c;
+    color: white;
+    font-weight: bold;
+  }
+  
+  td {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  tbody tr:hover {
+    background-color: #f1f1f1;
+  }
+  
+  .total {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-top: 20px;
+    text-align: right;
+    color: #333;
+  }
+  
+  .total span {
+    color: #a96c7c;
+    font-size: 1.3em;
+  }
+  
+  /* 
+   */
+   .form-group {
+    display: flex; /* Sử dụng Flexbox để căn chỉnh các phần tử con */
+    align-items: center; /* Căn giữa theo chiều dọc */
+    margin-bottom: 15px; /* Khoảng cách dưới mỗi nhóm */
+    flex-wrap: nowrap; /*
+  }
+  
+  .form-group label {
+    flex: 1; /* Đặt chiều rộng cho label để có khoảng cách hợp lý */
+    margin-left: 30px; /* Khoảng cách giữa label và input */
+  }
+  
+  .form-group input {
+    flex: 2; /* Đặt chiều rộng cho ô nhập */
+    padding: 8px; /* Khoảng cách bên trong ô nhập */
+    border: 1px solid #ccc; /* Đường viền cho ô nhập */
+    border-radius: 4px; /* Bo góc cho ô nhập */
+    margin-left: 20px;
+  }
+  
+  /* Căn chỉnh các ô nhập thông tin khách hàng */
+  .customer-info {
+    display: flex; /* Sử dụng Flexbox cho nhóm khách hàng */
+  }
+  
+  /* Căn chỉnh các ô nhập thông tin sản phẩm */
+  .product-info {
+    display: flex; /* Sử dụng Flexbox cho nhóm sản phẩm */
+  }
+  
+  
+  /* Quản lý đơn hàng */
+  .content {
+      padding: 20px;
+  }
+  
+  .filter-form {
+      margin-bottom: 20px;
+  }
+  
+  .order-table {
+      width: 100%;
+      border-collapse: collapse;
+  }
+  
+  .order-table th, .order-table td {
+      padding: 10px;
+      border: 1px solid #a96c7c;
+      text-align: center;
+  }
+
+  .order-table th {
+      background-color: #a96c7c;
+  }
+  
+  /* .order-table td button {
+      margin: 0 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+  } */
+  
+  /* button */
+
+ 
+.stylebutton{
+	padding: 5px 10px;
+	font-size: 10px;
+	font-weight: bold;
+	color: white;
+	background-color: #a96c7c; /* Màu nền */
+	border: none;
+	border-radius: 25px; /* Bo tròn nút */
+	cursor: pointer;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	transition: background-color 0.3s ease, transform 0.2s ease;
+  
+}
+.stylebuttonkt{
+	padding: 10px 20px;
+	font-size: 16px;
+	font-weight: bold;
+	color: white;
+	background-color: #dec0c8; /* Màu nền */
+	border: none;
+	border-radius: 25px; /* Bo tròn nút */
+	cursor: pointer;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.stylebutton:hover {
+	background-color: #a96c7c; /* Màu nền khi hover */
+	transform: translateY(-2px);
+}
+
+.stylebutton:active {
+	transform: translateY(1px);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+
+
+
+  .invoiceTable {
+	width: 100%;
+	border-collapse: collapse;
+	font-family: Arial, sans-serif;
+	background-color: #a96c7c; /* Màu nền của bảng */
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.invoiceTable thead {
+	background-color: #a96c7c; /* Màu nền cho tiêu đề bảng */
+	color: white;
+}
+
+.invoiceTable th, .invoiceTable td {
+	padding: 12px;
+	border: 1px solid #ddd;
+	text-align: center;
+	font-size: 16px;
+}
+
+.invoiceTable tbody tr:nth-child(even) {
+	background-color: #f2f2f2; /* Màu nền xen kẽ cho các hàng */
+}
