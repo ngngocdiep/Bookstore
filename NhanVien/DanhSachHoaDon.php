@@ -129,8 +129,8 @@ $data=mysqli_query($conn, $sql);
 									<td><?php echo $row["tinhtrang"]?></td>
 									<td><?php echo $row["tongtien"]?></td>
 									<td>
-										<button class="stylebutton" >Sửa</button>
-										<button class="stylebutton" >Xoá</button>
+										<button class="stylebutton" >Hoàn thành</button>
+										<button class="stylebutton" >Hủy đơn</button>
 									</td>			
 								</tr>
 								<?php

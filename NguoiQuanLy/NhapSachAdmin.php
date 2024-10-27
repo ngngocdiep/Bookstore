@@ -1,7 +1,63 @@
 <!doctype html>
 <?php
-session_start();
+include '../connectDB.php';
+if(isset($_POST["btnLuu"])){	
+		//B2: lấy dữ liệu từ các điều khiển đưa vào biến
+		$id=$_POST['txtIdsach'];
+		$nn=$_POST['txtNgaynhap'];
+		$nd=$_POST['txtNhande'];
+		$ls=$_POST['ddlsach'];
+		$tg=$_POST['txtTacgia'];
+		$nhaxb=$_POST['txtNhaxb'];
+		$namxb=$_POST['txtNamxb'];
+		$gn=$_POST['txtGianhap'];
+		$gb=$_POST['txtGiaban'];
+		$sl=$_POST['txtSoluong'];
+		$tt=$_POST['txtThanhtien'];
 
+		// Kiểm tra xem ngày nhập có nhỏ hơn ngày mai không
+		$today = strtotime(date("Y-m-d"));
+		$inputDate = strtotime($nn);
+		$tomorrow = strtotime("+1 day", $today);
+	
+		if ($inputDate >= $tomorrow) {
+			echo '<script>alert("Thất bại. Ngày nhập không hợp lệ.")</script>';
+		} else {
+			// lấy idsach và slkho từ sach, nếu tồn tại->update, tăng số lương, nếu chưa->insert
+			$infor="select idsach, slkho from sach where sach.idsach='$id'";
+			$kqinfor=mysqli_query($conn,$infor);
+			$soluong=0;
+			if(mysqli_num_rows($kqinfor) > 0){
+				$row = mysqli_fetch_assoc($kqinfor);
+				$slkho=$row['slkho'];
+				$soluong=$slkho+$sl;
+				$updatesach="update sach set slkho='$soluong' where idsach='$id'";
+				$update=mysqli_query($conn,$updatesach);
+	
+				if ($update) {
+					echo '<script>alert("Thêm mới thành công"); window.location.href="NhapSachAmin.php"</script>';
+				} else {
+					echo '<script>alert("Thêm mới thất bại"); window.location.href="NhapSachAdmin.php"</script>';
+				}
+			} else{
+				// B4: tạo câu lệnh sql để thực hiện chèn dl vào bảng
+				$sql1 = "INSERT INTO sach (idsach,theloai,tacgia,nhande,namxb,nhaxb,gianhap,giaban,slkho) 
+				VALUES ('$id','$ls','$tg','$nd','$namxb','$nhaxb','$gn','$gb','$sl')";
+				$kq1 = mysqli_query($conn, $sql1);
+				if ($kq1) {
+					echo '<script>alert("Thêm mới thành công"); window.location.href="NhapSachNV.php"</script>';
+				} else {
+					echo '<script>alert("Thêm mới thất bại"); window.location.href="NhapSachNV.php"</script>';
+				}
+			}
+			$insertPN="insert into phieunhap (	idsach,	ngaynhap,	soluongnhap,	thanhtien	) 
+			values ('$id','$nn','$sl','$thanhtien')";
+
+		}
+		
+	}
+	//B5: đóng kết nối
+	mysqli_close($conn);
 ?>
 <html>
 <head>
@@ -102,7 +158,7 @@ session_start();
 			</div>
 			<div class="form-group ">
 				<label for="gia-bia">Giá nhập</label>
-				<input type="text" id="gia-bia">
+				<input type="text" id="gia-bia" oninput="updateThanhTien()">
 			</div>
 			<div class="form-group">
 				<label for="giaban">Giá bán</label>
@@ -110,11 +166,11 @@ session_start();
 			</div>
 			<div class="form-group">
 				<label for="soluong">Số lượng</label>
-				<input type="text" id="soluong">
+				<input type="text" id="soluong" oninput="updateThanhTien()">
 			</div>
 			<div class="form-group">
 				<label for="thanh-tien">Thành tiền</label>
-				<input type="text" id="thanh-tien">
+				<input type="number" id="thanh-tien" readonly>
 			</div>
 		</div>
 		<div class="buttons-container">
@@ -133,6 +189,18 @@ session_start();
 				<p class="text-center1 text-body-secondary1">© 2024 Company, Inc</p>
 			</footer>
 	</div>
-		
+	<script>
+        function updateThanhTien() {
+            // Lấy giá nhập và số lượng từ các input
+            const giaNhap = parseFloat(document.getElementById('gia-bia').value) || 0;
+            const soLuong = parseFloat(document.getElementById('soluong').value) || 0;
+
+            // Tính thành tiền
+            const thanhTien = giaNhap * soLuong;
+
+            // Cập nhật giá trị vào input thành tiền
+            document.getElementById('thanh-tien').value = thanhTien.toFixed(2); // Làm tròn đến 2 chữ số thập phân
+        }
+    </script>
 </body>
 </html>
