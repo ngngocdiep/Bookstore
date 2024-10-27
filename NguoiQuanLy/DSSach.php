@@ -88,7 +88,7 @@ if ($countResult) {
 				</li>	
 				<li><a href="DSSach.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
 					<ul class="sub-menu">
-						<li><a href="DSSach.php">Danh sách Sách</a></li>
+						<li><a href="DSSach.php">Danh mục Sách</a></li>
 						<li><a href="NhapSachAdmin.php">Nhập sách</a></li>
 						<li><a href="#">Kiểm kê sách</a></li>
 					</ul>		
