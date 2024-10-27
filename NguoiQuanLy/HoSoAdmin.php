@@ -65,7 +65,7 @@ session_start();
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<link rel="stylesheet" href ="user.css" >
+	<link rel="stylesheet" href ="admin.css" >
 	<style>
         *{margin: 0px;}
         .menu_left{
@@ -83,7 +83,7 @@ session_start();
     </style>
     <link rel="stylesheet" href="./Css/bootstrap.min.css">
 
-<title>TrangChuUser</title>
+<title>HỒ SƠ ADMIN</title>
 
 </head>
 
@@ -109,35 +109,34 @@ session_start();
 	<div class="nd">
 			<div class="menu">
 			<ul>
-				<li ><a href="TrangChuUser.php"><i class="fa-solid fa-house"></i>Trang Chủ</a></li>
-				<li><a href="#"><i class="fa-solid fa-store"></i>Bán Hàng</a>
-					<ul class="sub-menu" style="display: block;">
-						<li><a href="HoaDon.php">Lập hóa đơn bán hàng</a></li>
-						<li ><a href="DanhSachHoaDon.php">Quản lý đơn hàng</a></li>
-						<li><a href="#">Xử lý hoàn trả hàng</a></li>
+				<li ><a href="TrangChuAdmin.php"><i class="fa-solid fa-house"></i>Trang Chủ</a></li>
+				<li ><a href="#"><i class="fa-solid fa-person"></i>Quản Lý Nhân Viên</a>
+					<ul class="sub-menu">
+						<li><a href="DSNhanVien.php">Danh sách nhân viên</a></li>
+						<li><a href="DSTaiKhoanNV.php">Danh sách tài khoản nhân viên</a></li>
+						<li><a href="ChamCongNV.php">Chấm công nhân viên</a></li>
 					</ul>
 				</li>
-		
+				<li><a href="#"><i class="fa-solid fa-cart-shopping"></i>Quản Lý Đơn Hàng</a>
+					<ul class="sub-menu">
+						<li><a href="DSDonHang.php">Danh sách đơn hàng</a></li>
+						<li><a href="#">Xử lý hoàn/hủy đơn</a></li>
+					</ul>		
+				</li>	
 				<li><a href="#"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
 					<ul class="sub-menu">
-						<li><a href="DSSachNV.php">Danh mục Sách</a></li>
-						<li><a href="NhapSachNV.php">Nhập sách</a></li>
+						<li><a href="DSSach.php">Danh sách Sách</a></li>
+						<li><a href="NhapSachAdmin.php">Nhập sách</a></li>
 						<li><a href="#">Kiểm kê sách</a></li>
 					</ul>		
 				</li>			  
 				<li ><a href="#"><i class="fa-solid fa-chart-simple"></i>Báo cáo</a>
 					<ul class="sub-menu">
-						<li ><a href="BCDTNV.php">Doanh thu</a></li>
+						<li><a href="BCDoanhThuAdmin.php">Doanh thu</a></li>
 						<li><a href="#">Tồn kho</a></li>
 					</ul>
 				</li>
-				<li ><a href="#"><i class="fa-solid fa-user" id="fa-user"></i>Tài khoản</a>
-					<ul class="sub-menu">
-						<li class="nd1"><a href="HoSoUser.php">Hồ sơ</a></li>
-						<li><a href="DoiMK.php">Đổi mật khẩu</a></li>
-					</ul>
-				</li>
-			</ul>
+				</ul>
 			</div>
 			<div class="content">
 				<h4>THÔNG TIN HỒ SƠ</h4>

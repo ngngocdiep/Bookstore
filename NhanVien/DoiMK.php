@@ -85,41 +85,36 @@ if (isset($_POST['btnLuu'])) {
 	
 	<div class="nd">
 			<div class="menu">
-				<!-- <div class="admin">
-					<i class="fa-solid fa-circle-user"></i> -->
-					<!-- <?php echo $_SESSION['tennguoidung']; ?> -->
-				<!-- </div> -->
-				<ul>
+			<ul>
 				<li ><a href="TrangChuUser.php"><i class="fa-solid fa-house"></i>Trang Chủ</a></li>
-				<li ><a href="#"><i class="fa-solid fa-store"></i>Bán Hàng</a>
-					<ul class="sub-menu">
+				<li><a href="#"><i class="fa-solid fa-store"></i>Bán Hàng</a>
+					<ul class="sub-menu" style="display: block;">
 						<li><a href="HoaDon.php">Lập hóa đơn bán hàng</a></li>
-						<li><a href="DanhSachHoaDon.php">Quản lý đơn hàng</a></li>
+						<li ><a href="DanhSachHoaDon.php">Quản lý đơn hàng</a></li>
 						<li><a href="#">Xử lý hoàn trả hàng</a></li>
 					</ul>
 				</li>
 		
-				<li><a href="DSSachNV.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
+				<li><a href="#"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
 					<ul class="sub-menu">
-						<li><a href="DSSachNV.php">Danh sách Sách</a></li>
+						<li><a href="DSSachNV.php">Danh mục Sách</a></li>
 						<li><a href="NhapSachNV.php">Nhập sách</a></li>
 						<li><a href="#">Kiểm kê sách</a></li>
 					</ul>		
 				</li>			  
-				<li ><a href=""><i class="fa-solid fa-chart-simple"></i>Báo cáo</a>
+				<li ><a href="#"><i class="fa-solid fa-chart-simple"></i>Báo cáo</a>
 					<ul class="sub-menu">
-						<li><a href="DoanhThu.php">Danh thu</a></li>
-						<li><a href="Tonkho.php">Tồn kho</a></li>
+						<li ><a href="BCDTNV.php">Doanh thu</a></li>
+						<li><a href="#">Tồn kho</a></li>
 					</ul>
-			</li>
-			<li class="nd1"><a href="HoSoUser.php"><i class="fa-solid fa-user" id="fa-user"></i>Tài khoản</a>
+				</li>
+				<li ><a href="#"><i class="fa-solid fa-user" id="fa-user"></i>Tài khoản</a>
 					<ul class="sub-menu">
 						<li><a href="HoSoUser.php">Hồ sơ</a></li>
-						<li><a href="DoiMK.php" style="background-color: #a96c7c;">Đổi mật khẩu</a></li>
+						<li class="nd1"><a href="DoiMK.php">Đổi mật khẩu</a></li>
 					</ul>
-			</li>
-				<!-- <li ><a href="../Logout.php"><i class="fa-solid fa-right-from-bracket"></i>Đăng xuất</a></li>	 -->
-				</ul>
+				</li>
+			</ul>
 			</div>
 			<div class="content">
 				<h4>ĐỔI MẬT KHẨU</h4>

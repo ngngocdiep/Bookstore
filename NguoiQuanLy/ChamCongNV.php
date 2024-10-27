@@ -44,35 +44,35 @@ session_start();
 	
 	<div class="nd">
 	<div class="menu">
-			<ul>
+	<ul>
 				<li ><a href="TrangChuAdmin.php"><i class="fa-solid fa-house"></i>Trang Chủ</a></li>
-				<li class ="nd1"><a href="DSNhanVien.php"><i class="fa-solid fa-person"></i>Quản Lý Nhân Viên</a>
+				<li ><a href="#"><i class="fa-solid fa-person"></i>Quản Lý Nhân Viên</a>
 					<ul class="sub-menu">
 						<li><a href="DSNhanVien.php">Danh sách nhân viên</a></li>
 						<li><a href="DSTaiKhoanNV.php">Danh sách tài khoản nhân viên</a></li>
-						<li><a href="ChamCongNV.php">Chấm công nhân viên</a></li>
+						<li class="nd1"><a href="ChamCongNV.php">Chấm công nhân viên</a></li>
 					</ul>
 				</li>
-				<li><a href="DSDonHang.php"><i class="fa-solid fa-cart-shopping"></i>Quản Lý Đơn Hàng</a>
+				<li><a href="#"><i class="fa-solid fa-cart-shopping"></i>Quản Lý Đơn Hàng</a>
 					<ul class="sub-menu">
 						<li><a href="DSDonHang.php">Danh sách đơn hàng</a></li>
 						<li><a href="#">Xử lý hoàn/hủy đơn</a></li>
 					</ul>		
 				</li>	
-				<li><a href="DSSach.php"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
+				<li><a href="#"><i class="fa-solid fa-swatchbook"></i>Quản Lý Sách</a>
 					<ul class="sub-menu">
 						<li><a href="DSSach.php">Danh sách Sách</a></li>
 						<li><a href="NhapSachAdmin.php">Nhập sách</a></li>
 						<li><a href="#">Kiểm kê sách</a></li>
 					</ul>		
 				</li>			  
-				<li ><a href=""><i class="fa-solid fa-chart-simple"></i>Báo cáo</a>
+				<li ><a href="#"><i class="fa-solid fa-chart-simple"></i>Báo cáo</a>
 					<ul class="sub-menu">
-						<li><a href="#">Danh thu</a></li>
+						<li><a href="BCDoanhThuAdmin.php">Doanh thu</a></li>
 						<li><a href="#">Tồn kho</a></li>
 					</ul>
 				</li>
-			</ul>
+				</ul>
 		</div>
             
 			<div class="content">
