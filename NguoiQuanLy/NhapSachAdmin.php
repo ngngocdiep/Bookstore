@@ -46,9 +46,9 @@ if(isset($_POST["btnLuu"])){
 				$update=mysqli_query($conn,$updatesach);
 	
 				if ($update) {
-					echo '<script>alert("Thêm mới thành công"); window.location.href="NhapSachNV.php"</script>';
+					echo '<script>alert("Thêm mới thành công"); window.location.href="NhapSachAdmin.php"</script>';
 				} else {
-					echo '<script>alert("Thêm mới thất bại"); window.location.href="NhapSachNV.php"</script>';
+					echo '<script>alert("Thêm mới thất bại"); window.location.href="NhapSachAdmin.php"</script>';
 				}
 			} else{
 				// B4: tạo câu lệnh sql để thực hiện chèn dl vào bảng
@@ -56,9 +56,9 @@ if(isset($_POST["btnLuu"])){
 				VALUES ('$id','$ls','$tg','$nd','$namxb','$nhaxb','$gn','$gb','$sl')";
 				$kq1 = mysqli_query($conn, $sql1);
 				if ($kq1) {
-					echo '<script>alert("Thêm mới thành công"); window.location.href="NhapSachNV.php"</script>';
+					echo '<script>alert("Thêm mới thành công"); window.location.href="NhapSachAdmin.php"</script>';
 				} else {
-					echo '<script>alert("Thêm mới thất bại"); window.location.href="NhapSachNV.php"</script>';
+					echo '<script>alert("Thêm mới thất bại"); window.location.href="NhapSachAdmin.php"</script>';
 				}
 			}
 			$insertPN="insert into phieunhap (	idsach,	ngaynhap,	soluongnhap,	thanhtien	) 
