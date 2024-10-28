@@ -105,7 +105,6 @@ $data=mysqli_query($conn, $sql);
                         <thead>
                             <tr>
                                 <th>Mã đơn hàng</th>
-                                <th>Khách hàng</th>
                                 <th>Ngày đặt</th>
                                 <th>Trạng thái</th>
                                 <th>Tổng tiền</th>
@@ -119,7 +118,6 @@ $data=mysqli_query($conn, $sql);
 									?>
 								<tr>
 									<td><?php echo $row["iddonhang"]?></td>
-									<td><?php echo $row["ngaytaodh"]?></td>
 									<td><?php echo $row["ngaytaodh"]?></td>
 									<td><?php echo $row["tinhtrang"]?></td>
 									<td><?php echo $row["tongtien"]?></td>

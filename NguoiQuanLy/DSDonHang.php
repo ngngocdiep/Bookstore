@@ -7,9 +7,102 @@ $data=mysqli_query($conn, $sql);
 ?>
 <html>
 <head>
+	<style>
+		.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Poppins', sans-serif;
+}
+
+.order-table th {
+  background-color: #91c1b2;
+  color: white;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.order-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.order-table tr:hover {
+  background-color: #f5f5f5;
+}
+
+.stylebutton {
+  background-color: #91c1b2;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 14px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.stylebutton:hover {
+  background-color: #7aa994;
+}
+.td {
+  background-color: #91c1b2;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chu {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.tieude1 {
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px 0 0 4px;
+  font-size: 16px;
+  width: 200px;
+}
+
+.search-button {
+  background-color: #7aa994;
+  border: none;
+  color: white;
+  padding: 8px 12px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin-left: -4px;
+  cursor: pointer;
+  border-radius: 0 4px 4px 0;
+}
+
+.search-button:hover {
+  background-color: #648f7f;
+}
+
+.fa-envelope, .fa-bell, .fa-right-from-bracket, .fa-user {
+  color: white;
+  font-size: 20px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+	</style>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
@@ -19,7 +112,7 @@ $data=mysqli_query($conn, $sql);
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<link rel="stylesheet" href ="content.css" >
+	
     <link rel="stylesheet" href ="admin.css" >
 
 
@@ -95,11 +188,10 @@ $data=mysqli_query($conn, $sql);
                     </form>
 
                     <!-- Bảng hiển thị đơn hàng -->
-                    <table class="order-table">
+                    <table class="order-table" >
                         <thead>
                             <tr>
                                 <th>Mã đơn hàng</th>
-                                <th>Khách hàng</th>
                                 <th>Ngày đặt</th>
                                 <th>Trạng thái</th>
                                 <th>Tổng tiền</th>
@@ -113,7 +205,6 @@ $data=mysqli_query($conn, $sql);
 									?>
 								<tr>
 									<td><?php echo $row["iddonhang"]?></td>
-									<td><?php echo $row["ngaytaodh"]?></td>
 									<td><?php echo $row["ngaytaodh"]?></td>
 									<td><?php echo $row["tinhtrang"]?></td>
 									<td><?php echo $row["tongtien"]?></td>

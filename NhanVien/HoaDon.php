@@ -126,7 +126,7 @@ if (isset($_POST['btnThemsp'])) {
 				<div class="customer-info">
 					<div class="form-group">
 						<label for="customerName">Tên khách hàng:</label>
-						<input type="text" id="customerName" placeholder="Nhập tên khách hàng">
+						<input type="text" id="customerName" name="tenkh" placeholder="Nhập tên khách hàng">
 					</div>
 
 					<div class="form-group">
