@@ -37,7 +37,7 @@ if(isset($_POST['btnLuu'])){
 	$kq=mysqli_query($conn,$sql1);
 	if($kq){
 
-		echo'<script>alert("Thay đổi thành công"); window.location.href="DSSachNV.php" </script>';
+		echo'<script>alert("Thay đổi thành công"); window.location.href="DSSach.php" </script>';
 
 	}else{
 		echo'<script>alert("Thay đổi thất bại")</script>';
