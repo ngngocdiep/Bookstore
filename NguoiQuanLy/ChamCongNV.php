@@ -1,6 +1,36 @@
 <!doctype html>
 <?php
-session_start();
+include '../connectDB.php';
+
+
+// Khởi tạo session cho taikhonan nếu chưa có
+if (!isset($_SESSION['chamcongnv'])) {
+    $_SESSION['chamcongnv'] = [];
+}
+
+// Truy vấn dữ liệu từ bảng taikhoan
+$sql="select * from chamcong ";
+$data=mysqli_query($conn, $sql);
+if ($data) {
+    // Lưu dữ liệu vào session
+    while ($row = mysqli_fetch_assoc($data)) {
+        $_SESSION['chamcongnv'][] = $row; // Thêm từng nhân viên vào session
+    }
+} else {
+    echo "Lỗi truy vấn: " . mysqli_error($conn);
+}
+
+// Truy vấn dữ liệu từ bảng nhanvien
+$sqlCount = "SELECT COUNT(*) as total FROM taikhoan where idquyen='1'";
+$countResult = mysqli_query($conn, $sqlCount);
+$totalEmployees = 0;
+
+if ($countResult) {
+    $countRow = mysqli_fetch_assoc($countResult);
+    $totalEmployees = $countRow['total']; // Lưu số lượng nhân viên vào biến
+} else {
+    echo "Lỗi truy vấn: " . mysqli_error($conn);
+}
 
 ?>
 <html>
@@ -77,34 +107,42 @@ session_start();
             
 			<div class="content">
 				<h4>CHẤM CÔNG</h4>
-				<table class="table-5-cols">
-					<thead>
-					  <tr>
-						<th>Mã Nhân Viên</th>
-						<th>Họ Tên</th>
-						<th>Ca Làm</th>
-						<th>Chức Năng</th>
-					  </tr>
+				<?php
+
+			// Kiểm tra xem session có chứa dữ liệu tài khoản nhân viên không
+			if (isset($_SESSION['chamcongnv']) && !empty($_SESSION['chamcongnv'])) {
+				echo '<table class="table-5-cols">';
+				echo '<thead>
+						<tr>
+							
+							<th>Mã NV</th>
+							<th>Ngày </th>
+							<th>Ca làm </th>
+							<th>Chức Năng</th>
+						</tr>
 					</thead>
-					<tbody>
-					  <tr>
-						<td>Data 1</td>
-						<td>Data 2</td>
-						<td>Data 3</td>
+					<tbody>';
+				foreach ($_SESSION['chamcongnv'] as $row) {
+					?>
+					<tr>
+						<td><?php echo htmlspecialchars($row["idnv"]); ?></td>
+						<td></td>
+						<td><?php echo htmlspecialchars($row["calam"]); ?></td>
+						<td><?php echo htmlspecialchars($row["mucluong"]); ?></td>
 						<td>
-                        <button class="btn-edit">Edit</button>
-                        <button class="btn-delete">Delete</button>
-                        </td>
-					  </tr>
-					  <tr>
-						<td>Data 6</td>
-						<td>Data 7</td>
-						<td>Data 8</td>
-						<td>Data 10</td>
-					  </tr>
-					  
-					</tbody>
-				  </table>
+							<button class="btn-edit" onclick="suaTK('<?php echo $row['idnv']; ?>')">Chấm công</button>
+							<button class="btn-delete" onclick="xoaTK('<?php echo $row['idnv']; ?>')">Sửa</button>
+						</td>
+					</tr>
+					<?php
+				}
+				unset($_SESSION['taikhoannv']);
+				echo '</tbody></table>';
+			} else {
+				echo '<p>Không có dữ liệu tài khoản nào!</p>';
+			}
+			?>
+			<button class="btn-add" onclick="" >Chấm công</button>
 			</div>
 	</div>
 	<!-- Footer -->
